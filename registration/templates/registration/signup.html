@@ -1,0 +1,22 @@
+{% extends 'base_login.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>.errorlist{color:red;} label{display: none;}</style>
+
+    <div class="row mt-3">
+      <div class="col-md-12 mx-auto mb-5 text-center">
+        
+        <form action="" method="post">{% csrf_token %}
+            <p><img class="img-login mb-2" src="/static/img/logos/logo.png" alt=""></p>
+            {{form.as_p}}
+
+            <p><input type="submit" class="btn btn-primary " value="Register"></p>
+        </form>
+
+        <p class="signup-p-login mt-5">You have an account? <a class="signup-link-login" href="{% url 'login' %}">Log in</a></p>
+      </div>
+      
+    </div>    
+{% endblock %}

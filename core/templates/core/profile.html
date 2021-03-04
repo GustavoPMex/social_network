@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block content %}
+{% load static %}
+<div class="container-img-profile mx-auto">
+    <img class="img-profile" src="{% static 'img/be.jpg' %}" alt="">
+</div>
+<div class="label-name-profile text-center mt-5"><p>Gustavo Alonso Pacheco Mex</p></div>
+<div class="text-center">
+    <div class="social-media-profile">
+        <a href="#" class="social-link-profile twitter" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-twitter"></ion-icon></a>
+
+        <a href="#" class="social-link-profile instagram" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-instagram"></ion-icon></a>
+
+        <a href="#" class="social-link-profile youtube" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-youtube"></ion-icon></a>
+    </div>
+</div>
+<div class="label-profile text-left mt-5"><p>Intro</p></div>
+<div class="section-profile text-center">
+    <p class="p-info-profile">
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet a
+    earum officia consequuntur, 
+    iusto cupiditate. Distinctio soluta temporibus,
+    quis illo assumenda possimus explicabo nemo quod,
+    pariatur corporis tenetur odio."
+    </p>
+</div>
+<div class="label-profile text-left mt-5"><p>Post</p></div>
+    <div>
+        <form action="">
+            <div class="form-group text-center">
+                <textarea class="form-control"  rows="3" placeholder="What's up?"></textarea>
+                <button type="submit" class="btn btn-success mt-3" disabled>Post</button>
+            </div>
+        </form>
+    </div>
+<div class="label-profile text-left mt-5"><p>Time line</p></div>
+<div class="time-line-profile">
+    <div class="content-target-profile">
+        <div >
+            <div class="content-img-target-profile mx-auto">
+                <img class="img-target-profile" src="{% static '/img/be.jpg' %}" alt="">
+            </div>
+            <a class="nav-link" href="{% url 'login' %}">Acceder</a>
+            <a class="nav-link" href="{% url 'signup' %}">Registro</a>
+        </div>
+        <div class="content-p-target-profile mx-auto">
+            <p class="p-name-target-profile">Gustavo Alonso Pacheco Mex: </p>
+            <p class="p-target-profile">"¿La pizza sabe mejor sin piña?"</p>
+        </div>
+        <div class="like-dislike-container text-center mt-2">
+            <button class="btn-like-dislike" id="likebtn">
+                <ion-icon name="heart"></ion-icon>
+            </button>
+            <input class="input-like-dislike" type="number" name="" id="input_like" value="0">
+
+            <button class="btn-like-dislike" id="dislikebtn">
+                <ion-icon name="heart-dislike"></ion-icon>
+            </button>
+            <input class="input-like-dislike" type="number" name="" id="input_dislike" value="0">
+        </div>
+    </div>
+</div>
+{% endblock %}

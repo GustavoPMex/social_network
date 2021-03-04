@@ -1,0 +1,38 @@
+{% extends 'base_login.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>.errorlist{color:red;}</style>
+
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto mb-5 text-center">
+      
+        {% if 'register' in request.GET %} 
+            <p class="p-correct">Successful registration, you can log in</p>
+        {% endif %}
+        
+        <form action="" method="post">{% csrf_token %}
+          <p><img class="img-login mb-2" src="/static/img/logos/logo.png" alt=""></p>
+          
+          {% if form.non_field_errors %}
+            <p class="p-incorrect">The username or password is incorrect. Try again</p>
+          {% endif %}
+          
+          <p> 
+            <input type="text" name="username" autofocus maxlength="254" required
+              id="id_username" class="form-control" placeholder="Username"/> 
+          </p>
+          
+          <p>
+            <input type="password" name="password" required
+              id="id_password" class="form-control" placeholder="Password"/>
+          </p>
+          <p><input type="submit" class="btn btn-primary " value="Log in"></p>
+        </form>
+
+        <p class="signup-p-login mt-5">Don't have an account? <a class="signup-link-login" href="{% url 'signup' %}">Sign up</a></p>
+      </div>
+      
+    </div>    
+{% endblock %}

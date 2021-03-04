@@ -1,0 +1,537 @@
+:root{
+    --primary: #432a9b;
+    --secondary: #ef991e;
+    --secondary-dark: #a76c1a;
+    --light: #fff;
+    --grey: #b1b1b1;
+}
+
+body{
+    /* EL OVERFLOW SIRVE PARA EVITAR EL SCROLL */
+    /* SE TIENE QUE TENER CUIDADO CON ÉSTO, YA QUE ES PARA HACER APARECER EL SCROLL EN ALGUNA SECCION */
+    overflow: hidden;
+    font-weight: 300;
+    height: 100vh;
+
+}
+
+
+.d-md-flex{
+    background-color: rgb(36, 36, 36);
+}
+
+/* MENU */
+.menu a{
+    text-decoration: none;
+    color: var(--light);
+}
+
+
+
+a:hover{
+    text-decoration: none;
+}
+
+.a-menu{
+    font-size: 30px;
+    transition: .1s;
+}
+
+.a-menu:hover{
+    color: var(--secondary);
+}
+
+
+div .bg-primary {
+    background-color: var(--primary) !important;
+}
+
+#sidebar-container{
+
+}
+
+#sidebar-container .logo{
+    padding: .875rem 1.15rem;
+}
+
+#sidebar-container .menu{
+    width: 18rem;
+}
+
+.logo-img{
+    width: 150px;
+}
+
+div .activate{
+    color: var(--secondary);
+}
+
+
+/* CONTENT */
+#content{
+    /* PERMITE EL SCROLL DE TODOS LOS ELEMENTOS QUE ESTÉN DENTRO DE CONTENT */
+    overflow-y: auto;
+    /* TIENE QUE TENER UNA ALTURA PARA QUE OVERFLOW FUNCIONE */
+    height: 100vh;
+    width: 100%;
+    padding: 1em 10em;
+}
+
+.content-profile{
+    background-color: black;
+    padding: 3em;
+    border-radius: 10px;
+}
+
+.container-img-profile{
+    height: 200px;
+    width: 200px;
+
+}
+
+.img-profile{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 5px solid #fff;
+}
+
+
+.label-profile{
+    font-size: 2em;
+    color: var(--light);
+
+}
+
+.label-name-profile{
+    font-size: 2em;
+    color: var(--light);
+}
+
+/* Info */
+.section-profile{
+    margin: 0;
+    color: var(--light);
+    padding: 1em;
+    border-radius: 10px;
+    border: 2px solid var(--primary);
+}
+
+.p-info-profile{
+    text-align: justify;
+    font-style: oblique;
+    font-size: 1.2em;
+}
+
+/* Social media */
+.social-media-profile{
+    width: 100%;
+}
+
+.social-link-profile{
+    color: var(--primary);
+    transition: .2s;
+}
+
+.twitter:hover{
+    color: #1da1f2;
+}
+
+.facebook:hover{
+    color: #405de6;
+
+}
+
+.youtube:hover{
+    color: #ff0000;
+
+}
+
+.social-icon-profile{
+    font-size: 2em;
+}
+
+/* modal Friends */
+.friends-list-profile{
+    height: 100px;
+    width: 100px;
+}
+
+.friends-img-profile{
+    width: 100%;
+    height: 100%;
+}
+
+.friends-p-profile{
+    font-size: 1.4em;
+    color: #fff;
+}
+
+.friends-modal-profile{
+    text-decoration: none;
+    color: var(--secondary);
+    border: none;
+    background: none;
+    transition: .1s;
+}
+
+
+.friends-modal-profile:hover{
+    color: var(--secondary-dark);
+}
+
+.modal-content{
+    background-color: rgb(80, 80, 80) !important;
+    color: #fff;
+}
+
+.img-modal-body{
+    margin: 0 0 0 10px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.p-modal-body{
+    font-size: 20px;
+}
+
+.link-modal-body{
+    text-decoration: none;
+    color: var(--light);
+    margin: 0 0 0 10px;
+    transition: .1s;
+}
+
+.link-modal-body:hover{
+    color: var(--secondary);
+}
+
+/* form post */
+.input-status-profile{
+    border: 1px solid black;
+
+}
+
+.btn-success{
+    font-size: 1.2em !important;
+    width: 7em;
+    background-color: var(--secondary) !important;
+    border: none !important;
+    transition: .1s !important;
+}
+
+.btn-success:focus{
+    outline: none;
+}
+
+.btn-success:hover{
+    background-color: var(--secondary-dark) !important;
+}
+
+
+/* Posts */
+.time-line-profile{
+
+}
+
+.content-target-profile{
+    margin-bottom: 7em;
+}
+
+.content-img-target-profile{
+    height: 100px;
+    width: 100px;
+
+
+}
+
+.img-target-profile{
+    height: 100%;
+    width: 100%;
+    border: 4px solid var(--light);
+    border-radius: 1em 1em 0 0;
+}
+
+.content-p-target-profile{
+    padding: 1em;
+    width: 80%;
+    background-color: var(--primary);
+    border-radius: 2em;
+    border: 4px solid var(--light);
+    
+}
+
+.p-name-target-profile{
+    text-align: center;
+    color: var(--light);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.p-target-profile{
+    text-align: center;
+    color: var(--light);
+    font-style: italic;
+    font-size: 1.2em;
+}
+
+.like-dislike-container{
+
+
+}
+
+.likebtn{
+
+}
+
+.dislikebtn{
+
+}
+
+.btn-like-dislike{
+    color: #fff;
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 0 8px;
+    margin: 10px 0;
+}
+
+.btn-like-dislike:active{
+    color: var(--secondary);
+    transform: scale(1.2);
+}
+
+.input-like-dislike{
+    width: 50px;
+    border: none;
+    background: none;
+    color: #919191;
+    font-size: 30px;
+    margin: 0px;
+    pointer-events: none;
+}
+
+/* footer */
+
+.p-footer{
+    font-size: 1.2em;
+    color: var(--light);
+}
+
+
+/* Friends */
+
+
+.img-friends-body{
+    margin: 0;
+    width: 100px;
+    border-radius: 50%;
+}
+
+.link-friends-body{
+    text-decoration: none;
+    color: var(--light);
+    transition: .1s;
+}
+
+.link-friends-body:hover{
+    color: var(--secondary);
+}
+
+.p-friends-body{
+    font-size: 22px;
+}
+
+.friends-action-body{
+
+}
+
+.messages-icon{
+    color: white;
+    transition: .1s;
+}
+
+.delete-icon{
+    color: red;
+    transition: .1s;
+}
+
+.block-icon{
+    color: var(--secondary);
+    transition: .1s;
+}
+
+.messages-icon:hover, .delete-icon:hover, .block-icon:hover{
+    color: var(--primary);
+}
+
+.content-friends-actions{
+    text-align: left;
+}
+
+.friends-action{
+    font-size:25px;
+    margin: 0 10px;
+    transition: .1s;
+}
+
+.btn-danger{
+    background-color: red !important;
+    transition: .1s !important;
+}
+
+.p-block-friends{
+    font-size: 22px;
+    color: var(--light);
+    margin-top: 0;
+
+}
+
+.block-users{
+    font-size: 25px;
+    color: red;
+}
+
+.unlock-icon{
+    color: green;
+    font-size: 30px;
+    transition: .1s;
+}
+
+.unlock-icon:hover{
+    color: var(--primary);
+}
+
+/* Messages */
+
+.content-msgs{
+    background-color: black;
+    padding: 2em;
+    border-radius: 10px;
+}
+
+/* Registration css */
+.content-registration{
+    background-color: var(--primary);
+    color: white;
+    height: 100vh;
+}
+
+.form-content-registration{
+    width: 450px;
+    margin-top: 5em;
+}
+
+.img-login{
+    width: 100px;
+}
+
+
+.p-correct{
+    font-size: 1.2em;
+    text-shadow: rgb(0, 255, 0)0 0 6px;
+}
+
+.p-incorrect{
+    font-size: 1.2em;
+    text-shadow: rgb(255, 0, 0)0 0 6px;
+}
+
+.signup-p-login{
+    font-size: 20px;
+}
+
+.signup-link-login{
+    text-decoration: none;
+    color: var(--secondary);
+    transition: .1s;
+}
+
+.signup-link-login:hover{
+    color: var(--secondary-dark);
+}
+
+form ul li,
+form p span{
+    display: none;
+}
+
+/* Less than 990 */
+@media screen and (max-width: 990px){
+    .content-friends-actions{
+        text-align: center;
+    }
+}
+
+
+/* Less than 110px */
+@media screen and (max-width: 1100px){
+    #content{
+        padding: 1em 4em
+    }
+
+}
+
+/* Less than 768px */
+@media screen and (max-width: 768px){
+    .main-content{
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .size-icon{
+        font-size: 35px;
+    }
+
+    #sidebar-container{
+        min-height: 0;
+    }
+
+    /* Friends */
+    .label-profile{
+        font-size: 1.7em;
+    }
+
+    .img-modal-body{
+        margin: 0px;
+        width: 40px;
+    }
+    
+    .p-modal-body{
+        font-size: 15px;
+    }
+
+    .link-modal-body{
+        margin: 0 0 0 8px;
+    }
+
+    /* content */
+    body{
+        height: auto;
+        overflow: hidden;
+    }
+
+    #content{
+        padding: 0;
+        height: auto;
+        overflow-y: hidden;
+    }
+
+    /* Like - dislike */
+    .btn-like-dislike{
+        margin-left: 5px;
+    }
+
+    /* Registration */
+    .form-content-registration{
+        padding: 1em;
+        width: 300px;
+    }
+
+    .singup-p-login{
+        font-size: 18px;
+    }
+
+}
+
