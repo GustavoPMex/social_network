@@ -142,3 +142,8 @@ if DEBUG:
 else:
     # Configurar email en producción
     pass
+
+# Media files
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.join.path(BASE_DIR, 'media')
