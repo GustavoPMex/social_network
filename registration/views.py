@@ -1,8 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
+from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from django import forms
-from .forms import UserCreationFormWithEmail
+from .forms import UserCreationFormWithEmail, ProfileForm
+from .models import Profile
+
 # Create your views here.
 
 class SignUpView(CreateView):
@@ -21,3 +24,11 @@ class SignUpView(CreateView):
         form.fields['password2'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Repeat your Password'})
         return form
 
+class ProfileUpdate(UpdateView):
+    form_class = ProfileForm
+    success_url = reverse_lazy('profile_core:profile')
+    template_name = 'registration/profile_form.html'
+
+    def get_object(self):
+        profile, created = Profile.objects.get_or_create(user_name=self.request.user)
+        return profile

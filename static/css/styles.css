@@ -123,6 +123,11 @@ div .activate{
     font-size: 1.2em;
 }
 
+.p-info-profile-default{
+    text-align: justify;
+    font-size: 1.2em;
+}
+
 /* Social media */
 .social-media-profile{
     width: 100%;
@@ -461,6 +466,29 @@ form p span{
 .h3-template{
     color: var(--secondary);
 }
+
+/* PROFILE UPDATE */
+.style-form-edit-profile{
+    color: white;
+}
+
+.label-form{
+    font-size: 20px;
+}
+
+.form-control{
+    background-color: #cfcfcf !important;
+    width: 90% !important;
+    margin: 3 auto !important;
+    font-size: 18px !important;
+
+
+}
+
+.input-img-profile{
+    width: 50%;
+}
+
 
 /* Less than 990 */
 @media screen and (max-width: 990px){

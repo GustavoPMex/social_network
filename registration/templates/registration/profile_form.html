@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+    <div class="text-center style-form-edit-profile">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if request.user.profile.img_profile %}
+                <div class="container-img-profile mx-auto">
+                    <img src="{{request.user.profile.img_profile.url}}" alt="" class="img-profile"></img>
+                    <p class="my-2">¿Borrar? <input type="checkbox" id="img_profile-clear" name="img_profile-clear" /></p>
+                </div>
+    
+            {% else %}
+                <div class="container-img-profile mx-auto">
+                    <img src="{% static 'img/profile-default.jpg' %}" alt="" class="img-profile">
+                </div>
+            {% endif %}
+
+            <div class="form-group my-5">
+                <input type="file" name="img_profile" class="input-img-profile" id="id_img_profile">
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Id Profile</label>
+                    {{form.friend_user_code}}
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Intro Profile</label>
+                {{form.intro}}
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Date of Birth</label>
+                {{form.birthday}}
+            </div>
+                
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Nationality</label>
+                {{form.nationality}}
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Github link</label>
+                {{form.sn_github}}
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Twitter link</label>
+                {{form.sn_twitter}}
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Youtube link</label>
+                {{form.sn_youtube}}
+            </div>
+            <input class="btn btn-success" type="submit" value="Save">
+
+        </form>
+    </div>
+{% endblock %}
