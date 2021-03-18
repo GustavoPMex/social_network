@@ -86,7 +86,16 @@ div .activate{
 .container-img-profile{
     height: 200px;
     width: 200px;
+}
 
+
+.container-delete-img{
+    font-size: 20px;
+}
+
+input[type='checkbox']{
+    width: 15px;
+    height: 15px;
 }
 
 .img-profile{
@@ -118,13 +127,14 @@ div .activate{
 }
 
 .p-info-profile{
-    text-align: justify;
+    text-align: center;
     font-style: oblique;
     font-size: 1.2em;
+    word-wrap: break-word;
 }
 
 .p-info-profile-default{
-    text-align: justify;
+    text-align: center;
     font-size: 1.2em;
 }
 
@@ -138,8 +148,16 @@ div .activate{
     transition: .2s;
 }
 
-.twitter:hover{
-    color: #1da1f2;
+.edit-profile{
+    text-decoration: none;
+    color: var(--primary);
+    transition: .2s;
+}
+
+
+
+.github:hover{
+    color: #4078c0;
 }
 
 .facebook:hover{
@@ -479,11 +497,28 @@ form p span{
 .form-control{
     background-color: #cfcfcf !important;
     width: 90% !important;
-    margin: 3 auto !important;
+    margin: auto !important;
     font-size: 18px !important;
+    text-align: center;
+}
 
+.links-email{
+    text-decoration: none;
+    color: var(--secondary);
+    transition: .1s;
 
 }
+
+.links-email:hover{
+    color: var(--secondary-dark);
+}
+
+.p-email{
+    font-size: 20px;
+
+}
+
+
 
 .input-img-profile{
     width: 50%;

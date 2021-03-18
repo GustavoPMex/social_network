@@ -8,7 +8,7 @@
             {% if request.user.profile.img_profile %}
                 <div class="container-img-profile mx-auto">
                     <img src="{{request.user.profile.img_profile.url}}" alt="" class="img-profile"></img>
-                    <p class="my-2">¿Borrar? <input type="checkbox" id="img_profile-clear" name="img_profile-clear" /></p>
+                    <p class="container-delete-img my-2">¿Borrar? <input type="checkbox" id="img_profile-clear" name="img_profile-clear" /></p>
                 </div>
     
             {% else %}
@@ -22,8 +22,15 @@
             </div>
 
             <div class="form-group">
-                <label class="label-form mt-2" for="">Id Profile</label>
+                <label class="label-form mt-2" for="">Id User</label>
                     {{form.friend_user_code}}
+            </div>
+
+            <div class="form-group">
+                <label class="label-form mt-2" for="">Email</label>
+                <input class="form-control  my-3  mx-auto" type="email" value="{{request.user.email}}" readonly>
+                <p class="p-email">Edita tu email - <a class="links-email" href="{% url 'profile_email' %}">Aquí</a></p>
+                <p class="p-email mb-5">Cambia tu contraseña - <a class="links-email" href="{% url 'password_change' %}">Aquí</a></p>
             </div>
 
             <div class="form-group">
@@ -56,6 +63,7 @@
                 {{form.sn_youtube}}
             </div>
             <input class="btn btn-success" type="submit" value="Save">
+            <a class="btn btn-danger" href="{% url 'profile_core:profile' %}">Cancel</a>
 
         </form>
     </div>

@@ -39,3 +39,17 @@ class ProfileForm(forms.ModelForm):
             'sn_twitter':forms.URLInput(attrs={'class':'form-control  my-3  mx-auto','placeholder':'Twitter url'}),
             'sn_youtube':forms.URLInput(attrs={'class':'form-control  my-3  mx-auto', 'placeholder':'Youtube url'})
         }
+
+class EmailForm(forms.ModelForm):
+    email = forms.EmailField(required=True, help_text='Campo requerido, 254 caracteres como máximo')
+
+    class Meta:
+        model = User
+        fields = ['email']
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if 'email' is self.changed_data:
+            if User.objects.filter(email=email).exists():
+                raise forms.ValidationError('El email ya está registrado')
+        return email

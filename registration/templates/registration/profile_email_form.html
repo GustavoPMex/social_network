@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>.errorlist{color:red;} label{display:none;}</style>
+    <div class="text-center style-form-edit-profile">
+        <form action="" method="post">{% csrf_token %}
+            <h3 class="mb-4">Email</h3>
+            {{form.as_p}}
+            <p><input type="submit" class="btn btn-primary btn-block" value="Actualizar"></p>
+        </form>
+    </div>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.views.generic import CreateView
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from django import forms
-from .forms import UserCreationFormWithEmail, ProfileForm
+from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm
 from .models import Profile
 
 # Create your views here.
@@ -32,3 +32,16 @@ class ProfileUpdate(UpdateView):
     def get_object(self):
         profile, created = Profile.objects.get_or_create(user_name=self.request.user)
         return profile
+
+class EmailUpdate(UpdateView):
+    form_class = EmailForm
+    success_url = reverse_lazy('profile')
+    template_name = 'registration/profile_email_form.html'
+
+    def get_object(self):
+        return self.request.user
+    
+    def get_form(self, form_class=None):
+        form = super(EmailUpdate, self).get_form()
+        form.fields['email'].widget = forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Email'})
+        return form

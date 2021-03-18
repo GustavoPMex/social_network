@@ -12,15 +12,19 @@
         <img class="img-profile" src="{% static 'img/profile-default.jpg'  %}" alt="">
     {% endif %}
 </div>
-<div class="label-name-profile text-center mt-5"><p>Gustavo Alonso Pacheco Mex</p></div>
+<div class="label-name-profile text-center mt-3"><a href="{% url 'profile' %}" class="edit-profile">Edit</a></div>
+<div class="label-name-profile text-center mt-3"><p>Gustavo Alonso Pacheco Mex</p></div>
 <div class="text-center">
     <div class="social-media-profile">
-        <a href="#" class="social-link-profile twitter" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-twitter"></ion-icon></a>
-
-        <a href="#" class="social-link-profile instagram" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-instagram"></ion-icon></a>
-
-        <a href="#" class="social-link-profile youtube" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-youtube"></ion-icon></a>
-        <a href="{% url 'profile' %}" class="social-link-profile youtube">Edit</a>
+        {% if request.user.profile.sn_github %}
+            <a href="{{request.user.profile.sn_github}}" class="social-link-profile github" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-github"></ion-icon></a>
+        {% endif %}
+        {% if request.user.profile.sn_twitter %}
+            <a href="{{request.user.profile.sn_twitter}}" class="social-link-profile twitter" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-twitter"></ion-icon></a>
+        {% endif %}
+        {% if request.user.profile.sn_youtube %}
+            <a href="{{request.user.profile.sn_youtube}}" class="social-link-profile youtube" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-youtube"></ion-icon></a>
+        {% endif %}
     </div>
 </div>
 <div class="label-profile text-left mt-5"><p>Intro</p></div>
