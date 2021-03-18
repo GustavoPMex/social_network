@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import profile_view_base
+from .views import CreatePost
 
 urls_core = ([
-    path('profile/', profile_view_base, name='profile'),
+    path('profile/', CreatePost.as_view(), name='profile'),
 ], 'profile_core')

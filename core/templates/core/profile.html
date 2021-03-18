@@ -37,36 +37,40 @@
 </div>
 <div class="label-profile text-left mt-5"><p>Post</p></div>
     <div>
-        <form action="">
+        <!-- <style>label{display: none;}</style> -->
+        <form action="" method="POST">
+            {% csrf_token %}
             <div class="form-group text-center">
-                <textarea class="form-control"  rows="3" placeholder="What's up?"></textarea>
-                <button type="submit" class="btn btn-success mt-3" disabled>Post</button>
+                {{form.as_p}}
+                <button type="submit" class="btn btn-success mt-3">Post</button>
             </div>
         </form>
     </div>
 <div class="label-profile text-left mt-5"><p>Time line</p></div>
 <div class="time-line-profile">
-    <div class="content-target-profile">
-        <div >
-            <div class="content-img-target-profile mx-auto">
-                <img class="img-target-profile" src="{% static '/img/be.jpg' %}" alt="">
+    {% for element in posts %}
+        <div class="content-target-profile">
+            <div >
+                <div class="content-img-target-profile mx-auto">
+                    <img class="img-target-profile" src="{{request.user.profile.img_profile.url}}" alt="">
+                </div>
+            </div>
+            <div class="content-p-target-profile mx-auto">
+                <p class="p-name-target-profile">Gustavo Alonso Pacheco Mex: </p>
+                <p class="p-target-profile">"{{element.post_user}}"</p>
+            </div>
+            <div class="like-dislike-container text-center mt-2">
+                <button class="btn-like-dislike" id="likebtn">
+                    <ion-icon name="heart"></ion-icon>
+                </button>
+                <input class="input-like-dislike" type="number" name="" id="input_like" value="{{element.like_post}}">
+
+                <button class="btn-like-dislike" id="dislikebtn">
+                    <ion-icon name="heart-dislike"></ion-icon>
+                </button>
+                <input class="input-like-dislike" type="number" name="" id="input_dislike" value="{{element.dislike_post}}">
             </div>
         </div>
-        <div class="content-p-target-profile mx-auto">
-            <p class="p-name-target-profile">Gustavo Alonso Pacheco Mex: </p>
-            <p class="p-target-profile">"¿La pizza sabe mejor sin piña?"</p>
-        </div>
-        <div class="like-dislike-container text-center mt-2">
-            <button class="btn-like-dislike" id="likebtn">
-                <ion-icon name="heart"></ion-icon>
-            </button>
-            <input class="input-like-dislike" type="number" name="" id="input_like" value="0">
-
-            <button class="btn-like-dislike" id="dislikebtn">
-                <ion-icon name="heart-dislike"></ion-icon>
-            </button>
-            <input class="input-like-dislike" type="number" name="" id="input_dislike" value="0">
-        </div>
-    </div>
+    {% endfor %}
 </div>
 {% endblock %}
