@@ -18,7 +18,7 @@
                 <img class="logo-img" src="{% static '/img/logos/logoletras.png' %}" alt="">
             </div>
             <div class="menu d-none d-md-block">
-                <a href="{% url 'profile_core:profile' %}" class="d-block p-3 a-menu {% if '/profile/' in request.path  %}activate{% endif %}"><ion-icon name="person" class="mx-3 lead"></ion-icon> Profile</a>
+                <a href="{% url 'profile_core:profile' %}" class="d-block p-3 a-menu {% if '/profile/' in request.path or request.path == '/'  %}activate{% endif %}"><ion-icon name="person" class="mx-3 lead"></ion-icon> Profile</a>
                 <a href="" class="d-block p-3 a-menu"><ion-icon name="flash" class="mx-3 lead"></ion-icon> News</a>
                 <a href="" class="d-block p-3 a-menu"><ion-icon name="people" class="mx-3 lead"></ion-icon> Friends</a>
                 <a href="" class="d-block p-3 a-menu"><ion-icon name="mail" class="mx-3 lead"></ion-icon> Messages</a>
@@ -40,11 +40,27 @@
         </div>
     </div>
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
     <!-- Icons -->
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <!-- My js -->
-    <script src="{% static 'js/script.js' %}"></script>
+
+    <script>
+        function abrir_modal(url){
+            $('#modal_crud').load(url, function(){
+                $(this).modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $(this).modal('show');
+            });
+
+            return false;
+        };
+    </script>
+
 </body>
 </html>

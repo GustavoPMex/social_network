@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic import TemplateView
 from posts.models import PostUser
 from posts.forms import PostUserForm
@@ -26,3 +26,8 @@ class CreatePost(CreateView):
         obj.dislike_post = 0
         obj.save()
         return super(CreatePost, self).form_valid(form)
+
+class DeletePost(DeleteView):
+    model = PostUser
+    template_name = 'core/delete_post.html'
+    success_url = reverse_lazy('profile_core:profile')

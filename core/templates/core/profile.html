@@ -5,6 +5,10 @@
 
 {% block content %}
 {% load static %}
+
+{% include 'core/includes/modal.html' %}
+{% include 'core/includes/modal_logout.html' %}
+
 <div class="container-img-profile mx-auto">
     {% if request.user.profile.img_profile %}
         <img class="img-profile" src="{{request.user.profile.img_profile.url}}" alt="">
@@ -12,7 +16,7 @@
         <img class="img-profile" src="{% static 'img/profile-default.jpg'  %}" alt="">
     {% endif %}
 </div>
-<div class="label-name-profile text-center mt-3"><a href="{% url 'profile' %}" class="edit-profile">Edit</a></div>
+<div class="label-name-profile text-center mt-3"><a href="{% url 'profile' %}" class="edit-profile">Edit</a> - <a class="btn btn-danger" href="{% url 'logout' %}"  data-toggle="modal" data-target="#modal-logout"><ion-icon class="icon-logout" name="log-out"></ion-icon></a></div>
 <div class="label-name-profile text-center mt-3"><p>Gustavo Alonso Pacheco Mex</p></div>
 <div class="text-center">
     <div class="social-media-profile">
@@ -48,29 +52,42 @@
     </div>
 <div class="label-profile text-left mt-5"><p>Time line</p></div>
 <div class="time-line-profile">
-    {% for element in posts %}
-        <div class="content-target-profile">
-            <div >
-                <div class="content-img-target-profile mx-auto">
-                    <img class="img-target-profile" src="{{request.user.profile.img_profile.url}}" alt="">
+    {% if posts %}
+        {% for element in posts %}
+            <div class="content-target-profile">
+                <div >
+                    <div class="content-img-target-profile mx-auto">
+                        <img class="img-target-profile" src="{{request.user.profile.img_profile.url}}" alt="">
+                    </div>
+                </div>
+                <div class="content-p-target-profile mx-auto">
+                    <p class="p-name-target-profile">Gustavo Alonso Pacheco Mex: </p>
+                    <p class="p-target-profile">"{{element.post_user}}"</p>
+                </div>
+                <div class="text-center mt-1">
+                
+                    <a onclick="return abrir_modal('{% url 'profile_core:delete' element.id %}')" class="btn btn-danger" href="#">Delete</a>
+                </div>
+                <div class="like-dislike-container text-center mt-2">
+                    <button class="btn-like-dislike" id="likebtn">
+                        <ion-icon name="heart"></ion-icon>
+                    </button>
+                    <input class="input-like-dislike" type="number" name="" id="input_like" value="{{element.like_post}}">
+
+                    <button class="btn-like-dislike" id="dislikebtn">
+                        <ion-icon name="heart-dislike"></ion-icon>
+                    </button>
+                    <input class="input-like-dislike" type="number" name="" id="input_dislike" value="{{element.dislike_post}}">
                 </div>
             </div>
-            <div class="content-p-target-profile mx-auto">
-                <p class="p-name-target-profile">Gustavo Alonso Pacheco Mex: </p>
-                <p class="p-target-profile">"{{element.post_user}}"</p>
-            </div>
-            <div class="like-dislike-container text-center mt-2">
-                <button class="btn-like-dislike" id="likebtn">
-                    <ion-icon name="heart"></ion-icon>
-                </button>
-                <input class="input-like-dislike" type="number" name="" id="input_like" value="{{element.like_post}}">
-
-                <button class="btn-like-dislike" id="dislikebtn">
-                    <ion-icon name="heart-dislike"></ion-icon>
-                </button>
-                <input class="input-like-dislike" type="number" name="" id="input_dislike" value="{{element.dislike_post}}">
-            </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center">
+            <p class="p-no-posts">No posts yet</p>
         </div>
-    {% endfor %}
+    {% endif %}
+
+    
+
 </div>
 {% endblock %}

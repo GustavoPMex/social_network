@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'registration.middleware.LoginRequiredMiddleWare'
 ]
 
 ROOT_URLCONF = 'social_network.urls'
@@ -135,6 +136,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 LOGIN_REDIRECT_URL = 'profile_core:profile'
 
 LOGOUT_REDIRECT_URL = 'login'
+
+LOGIN_EXEMPT_URLS = {
+    'logout',
+}
+
 
 # Emails
 if DEBUG:

@@ -1,0 +1,19 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Confirmation</h5>
+        </div>
+        <div class="modal-body">
+            <form role="form" action="{% url 'profile_core:delete' object.id %}" method="post"  class="form-inline">
+                {% csrf_token %}
+                <div class="text-center col-12">
+                    <p class="content-modal">Are you sure?</p>
+                </div>
+                <div class="modal-footer mx-auto">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-danger" value="Delete" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

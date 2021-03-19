@@ -117,6 +117,10 @@ input[type='checkbox']{
     color: var(--light);
 }
 
+.icon-logout{
+    width: 30px !important;
+}
+
 /* Info */
 .section-profile{
     margin: 0;
@@ -335,6 +339,11 @@ input[type='checkbox']{
     pointer-events: none;
 }
 
+.p-no-posts{
+    font-size: 30px;
+    color: white;
+}
+
 /* footer */
 
 .p-footer{
@@ -524,6 +533,11 @@ form p span{
     width: 50%;
 }
 
+/* MODAL  */
+.content-modal{
+    font-size: 20px;
+    
+}
 
 /* Less than 990 */
 @media screen and (max-width: 990px){
