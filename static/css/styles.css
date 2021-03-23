@@ -435,6 +435,11 @@ input[type='checkbox']{
     color: var(--primary);
 }
 
+.p-no-friends{
+    color: white;
+    font-size: 25px;
+}
+
 /* Messages */
 
 .content-msgs{
@@ -509,6 +514,10 @@ form p span{
     margin: auto !important;
     font-size: 18px !important;
     text-align: center;
+}
+
+.fc-friends{
+    width: 60% !important;
 }
 
 .links-email{

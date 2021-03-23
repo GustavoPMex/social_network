@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Friend Profile{% endblock %}
+
+{% block content %}
+{% if object.img_profile %}
+    <div class="container-img-profile mx-auto">
+        <img class="img-profile" src="{{object.img_profile.url}}" alt="">
+    </div>
+{% else %}
+    <div class="container-img-profile mx-auto">
+        {% load static %}
+        <img class="img-profile" src="{% static 'img/profile-default.jpg' %}" alt="">
+    </div>
+{% endif %}
+
+<div class="label-name-profile text-center mt-5"><p>{{object.user_name}}</p></div>
+<div class="text-center">
+    <div class="social-media-profile">
+        <ion-icon class="social-icon-profile mx-1 mx-md-2"  name="key"></ion-icon>
+        <a href="#" class="social-link-profile instagram" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
+    </div>
+</div>
+
+<div class="label-profile text-left mt-5"><p>Intro</p></div>
+<div class="section-profile">
+    <p class="p-info-profile">
+        Add this person to see your profile.
+    </p>
+</div>
+{% endblock %}

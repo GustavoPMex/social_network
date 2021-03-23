@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Friends{% endblock %}
+
+{% block content %}
+<div class="elements-container-friends text-center row">
+    <div class="col-lg-5">
+        <form class="input-group mb-3">
+            <div class="input-group-prepend mx-1">
+                <button class="btn btn-outline-secondary" type="button"><ion-icon name="search"></ion-icon></button>
+            </div>
+            <input type="text" class="form-control fc-friends" placeholder="" aria-label="" aria-describedby="basic-addon1">
+        </form>
+    </div>
+    <div class="col-lg-5">
+        <form class="input-group mb-3">
+            <div class="input-group-prepend mx-1">
+              <button class="btn btn-outline-secondary" type="button"><ion-icon name="person-add"></ion-icon></button>
+            </div>
+            <input type="text" class="form-control fc-friends" placeholder="" aria-label="" aria-describedby="basic-addon1">
+        </form>
+    </div>
+    <div class="col-lg-2">
+        <a class="btn btn-danger" href="/blocks_template.html">Blocking</a>
+    </div>
+</div>
+
+
+<div class="content-friends-list">
+    <div class="label-profile text-left mt-5"><p>Friends</p></div>
+    {% load static %}
+    {% if list_friends %}
+        {% for element in list_friends %}
+            <div class="mt-5">
+                <div class="mb-5 row">
+                    <div class="col-12 col-lg-3 text-center">
+                        <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
+                    </div>
+                    <div class="col-12 col-lg-9 content-friends-actions">
+                        <a class="link-friends-body" href=""><p class="p-friends-body ">Victor Resident Evil Samus</p></a>
+                        <div class="friends-action-body d-md-inline">
+                            <a class="friends-action messages-icon"  href="#" ><ion-icon name="mail" ></ion-icon></a>
+                            <a class="friends-action delete-icon" href="#"><ion-icon name="close-circle"></ion-icon></a>
+                            <a class="friends-action block-icon" href="#"><ion-icon name="remove-circle"></ion-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endfor %}
+    {% else %}
+        <p class="p-no-friends text-center">No friends yet</p>
+    {% endif %}
+</div>
+{% endblock %}

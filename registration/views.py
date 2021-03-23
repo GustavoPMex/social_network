@@ -13,7 +13,7 @@ class SignUpView(CreateView):
     template_name = 'registration/signup.html'
 
     def get_success_url(self):
-        return reverse_lazy('login' + '?register')
+        return reverse_lazy('login') + '?register' 
 
     def get_form(self, form_class=None):
         form = super(SignUpView, self).get_form()

@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from core.urls import urls_core
+from friends.urls import friends_urls
 from django.conf import settings
 
 urlpatterns = [
     path('', include(urls_core)),
+    path('friends/', include(friends_urls)), 
     path('admin/', admin.site.urls),
 
     # Paths registration

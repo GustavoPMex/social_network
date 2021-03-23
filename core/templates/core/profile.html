@@ -17,7 +17,7 @@
     {% endif %}
 </div>
 <div class="label-name-profile text-center mt-3"><a href="{% url 'profile' %}" class="edit-profile">Edit</a> - <a class="btn btn-danger" href="{% url 'logout' %}"  data-toggle="modal" data-target="#modal-logout"><ion-icon class="icon-logout" name="log-out"></ion-icon></a></div>
-<div class="label-name-profile text-center mt-3"><p>Gustavo Alonso Pacheco Mex</p></div>
+<div class="label-name-profile text-center mt-3"><p>{{request.user.profile.user_name}}</p></div>
 <div class="text-center">
     <div class="social-media-profile">
         {% if request.user.profile.sn_github %}
@@ -36,7 +36,7 @@
     {% if request.user.profile.intro %}
         <p class="p-info-profile">"{{request.user.profile.intro}}"</p>
     {% else %}
-        <p class="p-info-profile-default">Ésta persona aun no tiene configurado su intro</p>
+        <p class="p-info-profile-default">Nothing</p>
     {% endif %}
 </div>
 <div class="label-profile text-left mt-5"><p>Post</p></div>

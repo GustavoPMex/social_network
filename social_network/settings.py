@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # My apps
     'core',
     'posts',
+    'friends',
 
 ]
 
@@ -138,7 +139,7 @@ LOGIN_REDIRECT_URL = 'profile_core:profile'
 LOGOUT_REDIRECT_URL = 'login'
 
 LOGIN_EXEMPT_URLS = {
-    'logout',
+    'accounts/signup/'
 }
 
 
