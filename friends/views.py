@@ -4,8 +4,9 @@ from .models import FriendRequest
 from django.views.generic import ListView, DetailView
 from .models import UserFriends
 from registration.models import Profile
-# Create your views here.
+# Create your views here.  zqaatw
 
+ 
 class FriendsView(ListView):
     model = UserFriends
     template_name = 'friends/friends.html'
@@ -16,8 +17,32 @@ class ProfileFriend(DetailView):
     model = Profile
     template_name = 'friends/friend_profile.html'
 
-    # def get_object(self):
-    #     return get_object_or_404(Profile, user__profile__friend_user_code=self.kwargs['friend_user_code'])
+class SearchView(ListView):
+    model = Profile
+    template_name = 'friends/search_friend_profile.html'
+    context_object_name = 'friend'
+
+    def get_queryset(self):
+        result = super(SearchView, self).get_queryset()
+        query = self.request.GET.get('search')
+
+        print('Hola')
+        print(query)
+
+        if query:
+            postresult = Profile.objects.filter(friend_user_code__contains=query)
+
+            if postresult:
+                result = postresult
+            else:
+                result = 'no results'
+        else:
+            result = 'no results'
+        
+        return result
+    
+    
+
 
 def send_friend_request(request, userID):
     from_user = request.user 

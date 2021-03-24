@@ -357,11 +357,14 @@ input[type='checkbox']{
 
 .img-friends-body{
     margin: 0;
-    width: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
+    border: 1px solid white;
 }
 
 .link-friends-body{
+    font-size: 40px;
     text-decoration: none;
     color: var(--light);
     transition: .1s;

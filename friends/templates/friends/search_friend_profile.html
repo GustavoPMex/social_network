@@ -21,7 +21,6 @@
             </div>
         </form>
     </div>
-    
     <div class="col-lg-2">
         <a class="btn btn-danger" href="/blocks_template.html">Blocking</a>
     </div>
@@ -29,28 +28,30 @@
 
 
 <div class="content-friends-list">
-    <div class="label-profile text-left mt-5"><p>Friends</p></div>
-    {% load static %}
-    {% if list_friends %}
-        {% for element in list_friends %}
+    <div class="label-profile text-left mt-5"><p>Search result</p></div>
+    {% if friend == 'no results' %}
+        <p class="p-no-friends text-center">We didn't find any results</p>
+    {% else %}
+        {% load static %}
+        {% for field in friend %}
             <div class="mt-5">
                 <div class="mb-5 row">
-                    <div class="col-12 col-lg-3 text-center">
-                        <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
-                    </div>
-                    <div class="col-12 col-lg-9 content-friends-actions">
-                        <a class="link-friends-body" href=""><p class="p-friends-body ">Victor Resident Evil Samus</p></a>
-                        <div class="friends-action-body d-md-inline">
-                            <a class="friends-action messages-icon"  href="#" ><ion-icon name="mail" ></ion-icon></a>
-                            <a class="friends-action delete-icon" href="#"><ion-icon name="close-circle"></ion-icon></a>
-                            <a class="friends-action block-icon" href="#"><ion-icon name="remove-circle"></ion-icon></a>
+                    {% if field.img_profile %}
+                        <div class="col-12 col-lg-3 text-center">
+                            <img class="img-friends-body" src="{{field.img_profile.url}}" alt="">
                         </div>
+                    {% else %}
+                        <div class="col-12 col-lg-3 text-center">
+                            <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
+                        </div>
+                    {% endif %}
+                    <div class="col-12 col-lg-9 content-friends-actions mt-4">
+                        <a class="link-friends-body" href="{% url 'friends:profile' field.friend_user_code %}">{{field.user_name}}</a>
                     </div>
                 </div>
             </div> 
         {% endfor %}
-    {% else %}
-        <p class="p-no-friends text-center">No friends yet</p>
     {% endif %}
 </div>
+
 {% endblock %}
