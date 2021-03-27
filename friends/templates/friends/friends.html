@@ -5,17 +5,17 @@
 {% block content %}
 <div class="elements-container-friends text-center row">
     <div class="col-lg-5">
-        <form class="input-group mb-3">
+        <form action="{% url 'friends:search_friend' %}"  class="input-group mb-3">
             <div class="input-group-prepend mx-1">
                 <button class="btn btn-outline-secondary" type="submit"><ion-icon name="search"></ion-icon></button>
             </div>
-            <input type="search" class="form-control fc-friends" placeholder="Search in list" aria-label="" aria-describedby="basic-addon1">
+            <input type="search" class="form-control fc-friends" placeholder="Search in list" name="search_friend" aria-describedby="basic-addon1" required>
         </form>
     </div>
 
     <div class="col-lg-5">
         <form  action="{% url 'friends:search' %}" method="GET" class="input-group mb-3">
-            <input type="search" class="form-control fc-friends" placeholder="Search friend" name="search" aria-describedby="basic-addon1">
+            <input type="search" class="form-control fc-friends" placeholder="Search friend" name="search" aria-describedby="basic-addon1" required>
             <div class="input-group-prepend mx-1">
                 <button class="btn btn-outline-secondary" type="submit"><ion-icon name="person-add"></ion-icon></button>
             </div>
