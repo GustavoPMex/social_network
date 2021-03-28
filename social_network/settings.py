@@ -111,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'friends.UserFriends'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

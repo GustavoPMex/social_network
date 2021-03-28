@@ -18,14 +18,14 @@
 <div class="text-center">
     <div class="social-media-profile">
         <ion-icon class="social-icon-profile mx-1 mx-md-2"  name="key"></ion-icon>
-        <a href="#" class="social-link-profile instagram" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
+        <a href="{% url 'friends:send_request' object.id %}" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
     </div>
 </div>
 
 <div class="label-profile text-left mt-5"><p>Intro</p></div>
 <div class="section-profile">
     <p class="p-info-profile">
-        Add this person to see your profile.
+        Add this person to see your profile. 
     </p>
 </div>
 {% endblock %}

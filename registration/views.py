@@ -6,7 +6,8 @@ from django import forms
 from .forms import UserCreationFormWithEmail, ProfileForm, EmailForm
 from .models import Profile
 
-# Create your views here.
+# Create your views here. ki2889
+
 
 class SignUpView(CreateView):
     form_class = UserCreationFormWithEmail

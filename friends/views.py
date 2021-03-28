@@ -1,11 +1,11 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.contrib.auth.models import User
-from .models import FriendRequest
+from .models import FriendRequest, UserFriends
 from django.views.generic import ListView, DetailView
-from .models import UserFriends
 from registration.models import Profile
 # Create your views here.  zqaatw
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
  
 class FriendsView(ListView):
     model = UserFriends
@@ -62,16 +62,12 @@ class SearchViewFriends(ListView):
 
 def send_friend_request(request, userID):
     from_user = request.user 
-    to_user = User.objects.get(id=userID)
-
-    friend_request, created = FriendRequest.objects.get_or_create(
-        from_user=from_user, to_user=to_user
-    )
-
+    to_user = get_user_model().objects.get(id=userID)
+    friend_request, created = FriendRequest.objects.get_or_create(from_user=from_user, to_user=to_user)
     if created:
-        return httpResponse('Friend request sent')
+        return HttpResponse('Friend request sent')
     else:
-        return httpResponse('Friend request was already sent')
+        return HttpResponse('Friend request was already sent')
     
 
 def accept_friend_request(request, requestID):
