@@ -5,7 +5,7 @@ from django.conf import settings
 # Create your models here.
 
 class PostUser(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     post_user = models.TextField()
     date_post = models.DateTimeField(auto_now_add=True)
     like_post = models.DecimalField(decimal_places=0, max_digits=100)
