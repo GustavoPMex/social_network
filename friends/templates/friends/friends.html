@@ -31,15 +31,21 @@
 <div class="content-friends-list">
     <div class="label-profile text-left mt-5"><p>Friends | <a href="">Requests</a></p></div>
     {% load static %}
-    {% if list_friends %}
-        {% for element in list_friends %}
+    {% if request.user.profile.get_friends %}
+        {% for element in request.user.profile.get_friends %}
             <div class="mt-5">
                 <div class="mb-5 row">
-                    <div class="col-12 col-lg-3 text-center">
-                        <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
-                    </div>
+                    {% if element.profile.img_profile %}
+                        <div class="col-12 col-lg-3 text-center">
+                            <img class="img-friends-body" src="{{element.profile.img_profile.url}}" alt="">
+                        </div>
+                    {% else %}
+                        <div class="col-12 col-lg-3 text-center">
+                            <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
+                        </div>
+                    {% endif %}
                     <div class="col-12 col-lg-9 content-friends-actions">
-                        <a class="link-friends-body" href=""><p class="p-friends-body ">Victor Resident Evil Samus</p></a>
+                        <a class="link-friends-body" href=""><p class="p-friends-body ">{{element.profile.user_name}}</p></a>
                         <div class="friends-action-body d-md-inline">
                             <a class="friends-action messages-icon"  href="#" ><ion-icon name="mail" ></ion-icon></a>
                             <a class="friends-action delete-icon" href="#"><ion-icon name="close-circle"></ion-icon></a>

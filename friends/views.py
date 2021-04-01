@@ -1,16 +1,14 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from registration.models import Profile
-# Create your views here.  ki2889 
-
+from .models import Relationship
+# Create your views here.  cwguhj
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
  
-class FriendsView(ListView):
-    model = Profile
+class FriendsView(TemplateView):
     template_name = 'friends/friends.html'
-    context_object_name = 'list_friends'
 
 class ProfileFriend(DetailView):
     slug_field = 'friend_user_code'
@@ -18,7 +16,7 @@ class ProfileFriend(DetailView):
     template_name = 'friends/friend_profile.html'
 
 class SearchViewPerson(ListView):
-    model = Profile
+
     template_name = 'friends/search_friend_profile.html'
     context_object_name = 'friend'
 
@@ -49,12 +47,16 @@ class SearchViewFriends(ListView):
         query = self.request.GET.get('search_friend')
 
         if query:
-            query_result = Profile.objects.filter(user_name__username__contains=query) 
+            query_result = Profile.objects.filter(user_name__username__contains=query)
 
-            if query_result:
-                result = query_result 
+            for element in query_result:
+                if self.request.user not in element.friends.all():
+                    query_result = query_result.exclude(id=element.id)
+
+            if query_result: 
+                result = query_result
             else:
-                result = 'no results'
+                result = 'no results' 
         else:
             result = 'no results'
         

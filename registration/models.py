@@ -11,10 +11,17 @@ class Profile(models.Model):
     img_profile = models.ImageField(upload_to = 'profiles', null=True, blank=True)
     intro = models.TextField(null=True, blank=True)
     birthday = models.DateField(null=True, blank=True, default=datetime.date.today)
-    nationality = models.CharField(max_length=100)
+    nationality = models.CharField(max_length=100, blank=True)
     sn_github = models.CharField(max_length=100, null=True, blank=True)
     sn_twitter = models.CharField(max_length=100, null=True, blank=True)
     sn_youtube = models.CharField(max_length=100, null=True, blank=True)
+    friends = models.ManyToManyField(User, related_name='friends', blank=True)
+
+    def get_friends(self):
+        return self.friends.all()
+    
+    def get_friends_no(self):
+        return self.friends.all().count()
 
     def save(self, *args, **kwargs):
         if self.friend_user_code is None or self.friend_user_code == "":
