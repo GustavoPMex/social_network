@@ -15,6 +15,17 @@ class ProfileFriend(DetailView):
     model = Profile
     template_name = 'friends/friend_profile.html'
 
+class RequestList(ListView):
+    model = Relationship
+    template_name = 'friends/friends_request.html'
+    context_object_name = 'requests'
+
+    def get_queryset(self):
+        result = Relationship.objects.filter(receiver__user_name__username=self.request.user, status='send')
+        return result
+
+
+
 class SearchViewPerson(ListView):
     model = Profile
     template_name = 'friends/search_friend_profile.html'
@@ -52,7 +63,6 @@ class SearchViewFriends(ListView):
                 for element in query_result:
                     if self.request.user not in element.friends.all():
                         query_result = query_result.exclude(friend_user_code=element.friend_user_code)
-                        
                 if query_result:
                     result = query_result
                 else:

@@ -29,7 +29,7 @@
 
 
 <div class="content-friends-list">
-    <div class="label-profile text-left mt-5"><p>Friends | <a href="">Requests</a></p></div>
+    <div class="label-profile text-left mt-5"><p>Friends | <a href="{% url 'friends:request_list' %}">Requests</a></p></div>
     {% load static %}
     {% if request.user.profile.get_friends %}
         {% for element in request.user.profile.get_friends %}
