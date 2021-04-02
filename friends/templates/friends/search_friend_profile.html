@@ -29,11 +29,11 @@
 
 <div class="content-friends-list">
     <div class="label-profile text-left mt-5"><p>Search result</p></div>
-    {% if friend == 'no results' %}
+    {% if list_results == 'no results' %}
         <p class="p-no-friends text-center">We didn't find any results</p>
     {% else %}
         {% load static %}
-        {% for field in friend %}
+        {% for field in list_results %}
             <div class="mt-5">
                 <div class="mb-5 row">
                     {% if field.img_profile %}

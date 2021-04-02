@@ -5,5 +5,5 @@ friends_urls = ([
     path('', FriendsView.as_view(), name='list'),
     path('search/', SearchViewPerson.as_view(), name='search'),
     path('search_list/', SearchViewFriends.as_view(), name='search_friend'),
-    path('profile/<str:slug>/', ProfileFriend.as_view(), name='profile'),
+    path('profile-person/<str:slug>/', ProfileFriend.as_view(), name='profile'),
 ], 'friends')
