@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseNotFound
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, TemplateView
@@ -21,6 +21,15 @@ class ProfileFriend(DetailView):
     model = Profile
     template_name = 'friends/friend_profile.html'
 
+
+    def get_object(self, *args, **kwargs):
+        obj = super(ProfileFriend, self).get_object(*args,**kwargs)
+        relation = get_object_or_404(Relationship, sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
+        if relation.status == 'blocked':
+            return HttpResponseNotAllowed(['GET', 'POST']) 
+        else:
+            return obj
+
 class RequestList(ListView):
     model = Relationship
     template_name = 'friends/friends_request.html'
@@ -41,7 +50,6 @@ def RequestSend(request, slug):
         if form.is_valid():
             form = form.save(commit=False)
             form.sender = request.user.profile
-            
             #Filtrando al usuario que tenga coincidencia con el nombre que se le pasó atraves del slug
             user_in_profile = Profile.objects.only('user_name').get(user_name__username=slug).user_name
             #Pasamos la instancia del usuario del profile
@@ -52,7 +60,8 @@ def RequestSend(request, slug):
             form.save()
 
         #Se redirecciona al mismo perfil
-        return redirect('friends:profile', slug=user_in_profile.profile.friend_user_code)
+        # return redirect(reverse_lazy('friends:profile', slug=user_in_profile.profile.friend_user_code) + '?send')
+        return redirect(reverse_lazy('friends:profile', kwargs={'slug':user_in_profile.profile.friend_user_code}) + '?send')
 
     else:
         form = RelationshipForms()
@@ -63,6 +72,63 @@ def RequestSend(request, slug):
     }
     
     return render(request, 'friends/send_request.html', context)
+
+def RequestAccepted(request, id_relation, friend_code):
+    obj_relationship = get_object_or_404(Relationship, id=id_relation)
+    friend_by_code = get_object_or_404(Profile,  friend_user_code=friend_code)
+
+    if obj_relationship.sender.friend_user_code == friend_code:
+        obj_relationship.status = 'accepted'
+        obj_relationship.save()
+        return redirect('friends:list')
+
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+    
+def RequestRemove(request, id_relation, friend_code):
+    obj_relationship = get_object_or_404(Relationship, id=id_relation)
+    friend_by_code = get_object_or_404(Profile, friend_user_code=friend_code)
+
+    if obj_relationship.sender.friend_user_code == friend_code:
+        obj_relationship.delete()
+        return redirect('friends:request_list')
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+
+def DeleteFriend(request, friend_name):   
+    if request.method == 'POST':
+        #Primera forma
+        # try:
+        #     relation = Relationship.objects.get(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        # except Relationship.DoesNotExist:
+        #     return HttpResponseNotAllowed(['GET', 'POST'])
+
+        relation = get_object_or_404(Relationship, sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+
+        relation.status = 'deleted'
+        relation.save()
+        relation.delete()
+
+        return redirect('friends:list') 
+
+    context = {
+        'friend_name':friend_name
+    }
+
+    return render(request, 'friends/remove_friend.html', context)
+
+def BlockUser(request, friend_name):
+    if request.method == 'POST':
+        relation = get_object_or_404(Relationship, sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        relation.status = 'blocked'
+        relation.save()
+        return redirect('friends:list')
+
+    context = {
+        'friend_name':friend_name
+    }
+
+    return render(request, 'friends/block_user.html', context)
 
 # class RequestSend(CreateView):
 #     model = Relationship

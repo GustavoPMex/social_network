@@ -18,6 +18,9 @@
 
 
 <div class="label-name-profile text-center mt-5"><p>{{object.user_name}}</p></div>
+{% if 'send' in request.GET %} 
+    <p class="p-request-send text-center">Request send</p>
+{% endif %}
 <div class="text-center">
     {% include 'friends/includes/modal.html' with objeto=object.user_name %}
     <div class="social-media-profile">

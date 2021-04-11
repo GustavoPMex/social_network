@@ -473,6 +473,12 @@ input[type='checkbox']{
     text-shadow: rgb(0, 255, 0)0 0 6px;
 }
 
+.p-request-send{
+    font-size: 1.5em;
+    color: rgb(0, 211, 0);
+}
+
+
 .p-incorrect{
     font-size: 1.2em;
     text-shadow: rgb(255, 0, 0)0 0 6px;
