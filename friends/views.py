@@ -127,8 +127,21 @@ def DeleteFriend(request, friend_name):
     return render(request, 'friends/remove_friend.html', context)
 
 def BlockUser(request, friend_name):
+    if request.method == 'GET':
+        relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
+        result = ''
+
+        result = relation_op_two.get(sender__user_name__username=request.user) 
+        print(result)
+
     if request.method == 'POST':
-        relation = get_object_or_404(Relationship, sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
+        result = ''
+
+        if relation_op_one:
+            result = relation_op_one.get(status)
         relation.status = 'blocked'
         relation.save()
         return redirect('friends:list')

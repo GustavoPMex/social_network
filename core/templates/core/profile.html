@@ -57,7 +57,11 @@
             <div class="content-target-profile">
                 <div >
                     <div class="content-img-target-profile mx-auto">
-                        <img class="img-target-profile" src="{{request.user.profile.img_profile.url}}" alt="">
+                        {% if request.user.profile.img_profile %}
+                            <img class="img-target-profile" src="{{request.user.profile.img_profile.url}}" alt="">
+                        {% else %}
+                            <img class="img-target-profile" src="{% static 'img/profile-default.jpg' %}" alt="">
+                        {% endif %}
                     </div>
                 </div>
                 <div class="content-p-target-profile mx-auto">
