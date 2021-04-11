@@ -8,7 +8,12 @@ from .models import Relationship
 from django.urls import reverse_lazy
 from .forms import RelationshipForms
 
-# Create your views here.  cwguhj
+# Create your views here.  
+
+# falanito - cq37zv
+# Luis - 0yl6or
+# Gustavo - 2fvu7d
+# Fulanito - cwguhj
 
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -22,13 +27,13 @@ class ProfileFriend(DetailView):
     template_name = 'friends/friend_profile.html'
 
 
-    def get_object(self, *args, **kwargs):
-        obj = super(ProfileFriend, self).get_object(*args,**kwargs)
-        relation = get_object_or_404(Relationship, sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
-        if relation.status == 'blocked':
-            return HttpResponseNotAllowed(['GET', 'POST']) 
-        else:
-            return obj
+    # def get_object(self, *args, **kwargs):
+    #     obj = super(ProfileFriend, self).get_object(*args,**kwargs)
+    #     relation = get_object_or_404(Relationship, sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
+    #     if relation.status == 'blocked':
+    #         return HttpResponseNotAllowed(['GET', 'POST']) 
+    #     else:
+    #         return obj
 
 class RequestList(ListView):
     model = Relationship
@@ -95,19 +100,23 @@ def RequestRemove(request, id_relation, friend_code):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-def DeleteFriend(request, friend_name):   
+def DeleteFriend(request, friend_name):               
     if request.method == 'POST':
-        #Primera forma
-        # try:
-        #     relation = Relationship.objects.get(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
-        # except Relationship.DoesNotExist:
-        #     return HttpResponseNotAllowed(['GET', 'POST'])
 
-        relation = get_object_or_404(Relationship, sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
+        relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
+        result = ''
 
-        relation.status = 'deleted'
-        relation.save()
-        relation.delete()
+        if relation_op_one:
+            result  = relation_op_one.get(status='accepted')
+        elif relation_op_two:
+            result = relation_op_two.get(status='accepted')
+        else:
+            return HttpResponseNotAllowed(['GET', 'POST'])
+
+        result.status = 'deleted'
+        result.save()
+        result.delete()
 
         return redirect('friends:list') 
 
