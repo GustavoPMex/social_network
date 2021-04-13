@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseForbidden
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, TemplateView
@@ -26,14 +26,42 @@ class ProfileFriend(DetailView):
     model = Profile
     template_name = 'friends/friend_profile.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        #Solicitamos el objeto del detail view
+        obj = super(ProfileFriend, self).get_object()
+        #En este caso es instancia de la clase profile, que tiene un atributo user_name
+        relation_op_one = Relationship.objects.filter(sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
+        #En este caso es instancia de la clase profile, que tiene un atributo user_name
+        #La razon de por qué se piden dos filter, es por que el sender y receiver pueden variar de posición, dependiendo quien envió la solicitud de amistad
+        relation_op_two = Relationship.objects.filter(sender__user_name__username=self.request.user, receiver__user_name__username=obj.user_name)
+        #Declaramos result
+        result = ''
+
+        if relation_op_one:
+            #Filtramos los values, pedimos el elemento en la posición 0 (que es un dict) y posteiormente pedimos el value con ayuda del key "status"
+            result = relation_op_one.values("status")[0]['status']
+        elif relation_op_two:
+            #Filtramos los values, pedimos el elemento en la posición 0 (que es un dict) y posteiormente pedimos el value con ayuda del key "status"
+            result = relation_op_two.values("status")[0]['status']
+        else:
+            #En caso de que ninguno se cumpla, se prohibe la entrada
+            return HttpResponseForbidden()
+
+        if result == 'blocked':
+            #Si el objeto filtrado tiene su status como blocked, se le prohibe el acceso
+            return HttpResponseNotAllowed(['GET', 'POST'])
+        else:
+            #Retornamos del objeto de detail view de manera normal
+            return super(ProfileFriend, self).dispatch(request, *args, **kwargs)
+ 
 
     # def get_object(self, *args, **kwargs):
     #     obj = super(ProfileFriend, self).get_object(*args,**kwargs)
-    #     relation = get_object_or_404(Relationship, sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
-    #     if relation.status == 'blocked':
+    #     relation_op_one = get_object_or_404(Relationship, sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
+    #     if relation_op_one.status == 'blocked':
     #         return HttpResponseNotAllowed(['GET', 'POST']) 
     #     else:
-    #         return obj
+    #         return HttpResponseNotAllowed(['GET', 'POST']) 
 
 class RequestList(ListView):
     model = Relationship
@@ -102,7 +130,6 @@ def RequestRemove(request, id_relation, friend_code):
 
 def DeleteFriend(request, friend_name):               
     if request.method == 'POST':
-
         relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
         relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
         result = ''
@@ -127,23 +154,20 @@ def DeleteFriend(request, friend_name):
     return render(request, 'friends/remove_friend.html', context)
 
 def BlockUser(request, friend_name):
-    if request.method == 'GET':
-        relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
-        relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
-        result = ''
-
-        result = relation_op_two.get(sender__user_name__username=request.user) 
-        print(result)
-
     if request.method == 'POST':
         relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
         relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
         result = ''
 
         if relation_op_one:
-            result = relation_op_one.get(status)
-        relation.status = 'blocked'
-        relation.save()
+            result = relation_op_one.get(status='blocked')
+        elif relation_op_two:
+            result = relation_op_two.get(status='blocked')
+        else:
+            return HttpResponseNotAllowed(['GET', 'POST'])
+
+        result.status = 'blocked'
+        result.save()
         return redirect('friends:list')
 
     context = {
