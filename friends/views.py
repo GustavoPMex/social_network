@@ -45,10 +45,11 @@ class ProfileFriend(DetailView):
             result = relation_op_two.values("status")[0]['status']
         else:
             #En caso de que ninguno se cumpla, se prohibe la entrada
-            return HttpResponseForbidden()
+            return super(ProfileFriend, self).dispatch(request, *args, **kwargs)
+            #FALTA RESOLVER ÉSTO
 
         if result == 'blocked':
-            #Si el objeto filtrado tiene su status como blocked, se le prohibe el acceso
+            #Si el objeto filtrado(status) es blocked, se le prohibe el acceso
             return HttpResponseNotAllowed(['GET', 'POST'])
         else:
             #Retornamos del objeto de detail view de manera normal
@@ -72,6 +73,15 @@ class RequestList(ListView):
         result = Relationship.objects.filter(receiver__user_name__username=self.request.user, status='send')
         return result
 
+class BlockList(ListView):
+    model = Relationship
+    template_name = 'friends/block_list.html'
+    context_object_name = 'blocks'
+
+    def get_queryset(self):
+        result = Relationship.objects.filter(sender__user_name__username=self.request.user, status='blocked')
+        print(result)
+        return result
 
 def RequestSend(request, slug):
     # Pruebas con ayuda del GET
@@ -154,17 +164,26 @@ def DeleteFriend(request, friend_name):
     return render(request, 'friends/remove_friend.html', context)
 
 def BlockUser(request, friend_name):
+    if request.method == 'GET':
+        sender = get_object_or_404(Profile, user_name__username=request.user)
+        receiver = get_object_or_404(Profile, user_name__username=friend_name)
+        print(sender)
+        print(receiver)
+
     if request.method == 'POST':
         relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
         relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
         result = ''
 
         if relation_op_one:
-            result = relation_op_one.get(status='blocked')
+            result = relation_op_one.first()
         elif relation_op_two:
-            result = relation_op_two.get(status='blocked')
+            result = relation_op_two.first()
         else:
-            return HttpResponseNotAllowed(['GET', 'POST'])
+            sender = get_object_or_404(Profile, user_name__username=request.user)
+            receiver = get_object_or_404(Profile, user_name__username=friend_name)
+            relation_create = Relationship.objects.create(sender=sender, receiver=receiver)
+            result = relation_create
 
         result.status = 'blocked'
         result.save()
@@ -175,6 +194,10 @@ def BlockUser(request, friend_name):
     }
 
     return render(request, 'friends/block_user.html', context)
+
+def UnlockUser(request, friend_name):
+    pass
+
 
 # class RequestSend(CreateView):
 #     model = Relationship

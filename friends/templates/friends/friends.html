@@ -31,8 +31,9 @@
 
 
 <div class="content-friends-list">
-    <div class="label-profile text-left mt-5"><p>Friends | <a href="{% url 'friends:request_list' %}">Requests</a> | <a href="#">Block</a></p></div>
+    <div class="label-profile text-left mt-5"><p>Friends | <a href="{% url 'friends:request_list' %}">Requests</a> | <a href="{% url 'friends:block_list' %}">Block</a></p></div>
     {% load static %}
+    
     {% if request.user.profile.get_friends %}
         
         {% include 'friends/includes/modal.html' %}

@@ -26,6 +26,7 @@
     <div class="social-media-profile">
         <ion-icon class="social-icon-profile mx-1 mx-md-2"  name="key"></ion-icon>
         <a onclick="return abrir_modal('{% url 'friends:request_send' object.user_name %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
+        <a class="friends-action block-icon" onclick="return abrir_modal('{% url 'friends:block_user' object.user_name %}')"  href="#"><ion-icon name="remove-circle"></ion-icon></a>
     </div>
 </div>
 
