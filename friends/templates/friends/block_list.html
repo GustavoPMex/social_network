@@ -3,7 +3,9 @@
 {% block title %}Request List{% endblock %}
 
 {% block content %}
- 
+
+{% include 'friends/includes/modal.html' %}
+
 <div class="content-friends-list">
     <div class="label-profile text-left"><p>Block List</div>
     {% load static %}
@@ -11,9 +13,9 @@
         {% for element in blocks %}
             <div class="mt-5">
                 <div class="mb-5 row">
-                    {% if element.sender.img_profile %}
+                    {% if element.receiver.img_profile %}
                         <div class="col-12 col-lg-3 text-center">
-                            <img class="img-friends-body" src="{{element.sender.img_profile.url}}" alt="">
+                            <img class="img-friends-body" src="{{element.receiver.img_profile.url}}" alt="">
                         </div>
                     {% else %}
                         <div class="col-12 col-lg-3 text-center">
@@ -21,10 +23,9 @@
                         </div>
                     {% endif %}
                     <div class="col-12 col-lg-9 content-friends-actions">
-                        <a class="link-friends-body" href="{% url 'friends:profile' element.sender.friend_user_code  %}"><p class="p-friends-body ">{{element.sender.user_name}}</p></a>
+                        <p class="p-friends-body ">{{element.receiver.user_name}}</p>
                         <div class="friends-action-body d-md-inline">
-                            <a class="friends-action messages-icon"  href="{% url 'friends:request_accepted' element.id element.sender.friend_user_code %}" ><ion-icon name="checkbox"></ion-icon></a>
-                            <a class="friends-action delete-icon" href="{% url 'friends:request_remove' element.id element.sender.friend_user_code %}"><ion-icon name="close-circle"></ion-icon></a>
+                            <a class="friends-action messages-icon" onclick="return abrir_modal('{% url 'friends:unblock_user' element.receiver.user_name %}')"  href="#" >Unblock</a>
                         </div>
                     </div>
                 </div>

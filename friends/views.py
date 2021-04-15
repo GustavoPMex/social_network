@@ -80,7 +80,6 @@ class BlockList(ListView):
 
     def get_queryset(self):
         result = Relationship.objects.filter(sender__user_name__username=self.request.user, status='blocked')
-        print(result)
         return result
 
 def RequestSend(request, slug):
@@ -164,12 +163,6 @@ def DeleteFriend(request, friend_name):
     return render(request, 'friends/remove_friend.html', context)
 
 def BlockUser(request, friend_name):
-    if request.method == 'GET':
-        sender = get_object_or_404(Profile, user_name__username=request.user)
-        receiver = get_object_or_404(Profile, user_name__username=friend_name)
-        print(sender)
-        print(receiver)
-
     if request.method == 'POST':
         relation_op_one = Relationship.objects.filter(sender__user_name__username=friend_name, receiver__user_name__username=request.user)
         relation_op_two = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name)
@@ -184,7 +177,11 @@ def BlockUser(request, friend_name):
             receiver = get_object_or_404(Profile, user_name__username=friend_name)
             relation_create = Relationship.objects.create(sender=sender, receiver=receiver)
             result = relation_create
-
+    
+        if result.sender != request.user:
+            result.sender = get_object_or_404(Profile, user_name__username=request.user)
+            result.receiver = get_object_or_404(Profile, user_name__username=friend_name)
+        
         result.status = 'blocked'
         result.save()
         return redirect('friends:list')
@@ -195,8 +192,20 @@ def BlockUser(request, friend_name):
 
     return render(request, 'friends/block_user.html', context)
 
-def UnlockUser(request, friend_name):
-    pass
+def UnblockUser(request, friend_name):
+    if request.method == 'POST':
+        relation = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name).first()
+        relation.delete()
+        return redirect('friends:block_list')
+    
+    context = {
+        'friend_name':friend_name
+    }
+
+    return render(request, 'friends/unblock_user.html', context)
+    
+
+
 
 
 # class RequestSend(CreateView):
