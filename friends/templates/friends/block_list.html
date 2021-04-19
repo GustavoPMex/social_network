@@ -13,15 +13,9 @@
         {% for element in blocks %}
             <div class="mt-5">
                 <div class="mb-5 row">
-                    {% if element.receiver.img_profile %}
-                        <div class="col-12 col-lg-3 text-center">
-                            <img class="img-friends-body" src="{{element.receiver.img_profile.url}}" alt="">
-                        </div>
-                    {% else %}
-                        <div class="col-12 col-lg-3 text-center">
-                            <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
-                        </div>
-                    {% endif %}
+                    <div class="col-12 col-lg-3 text-center">
+                        <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
+                    </div>
                     <div class="col-12 col-lg-9 content-friends-actions">
                         <p class="p-friends-body ">{{element.receiver.user_name}}</p>
                         <div class="friends-action-body d-md-inline">

@@ -16,7 +16,6 @@
     </div>
 {% endif %}
 
-
 <div class="label-name-profile text-center mt-5"><p>{{object.user_name}}</p></div>
 {% if 'send' in request.GET %} 
     <p class="p-request-send text-center">Request send</p>
@@ -25,7 +24,15 @@
     {% include 'friends/includes/modal.html' with objeto=object.user_name %}
     <div class="social-media-profile">
         <ion-icon class="social-icon-profile mx-1 mx-md-2"  name="key"></ion-icon>
-        <a onclick="return abrir_modal('{% url 'friends:request_send' object.user_name %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
+        {% if not relation == 'no_request' %}
+            {% if relation == 'user_cancel' %}
+                <a onclick="return abrir_modal('{% url 'friends:request_cancel' object.friend_user_code %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="close-circle"></ion-icon></a> 
+            {% elif relation == 'user_accept' %}
+                <a onclick="return abrir_modal('{% url 'friends:request_accepted' id_relation object.friend_user_code %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="walk"></ion-icon></a> 
+            {% else %}
+                <a onclick="return abrir_modal('{% url 'friends:request_send' object.user_name %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
+            {% endif %}
+        {% endif %}
         <a class="friends-action block-icon" onclick="return abrir_modal('{% url 'friends:block_user' object.user_name %}')"  href="#"><ion-icon name="remove-circle"></ion-icon></a>
     </div>
 </div>

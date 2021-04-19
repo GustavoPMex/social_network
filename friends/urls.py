@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import FriendsView, ProfileFriend, SearchViewPerson, SearchViewFriends, RequestList, RequestSend, RequestAccepted, RequestRemove, DeleteFriend, BlockUser, BlockList, UnblockUser
+from .views import FriendsView, ProfileFriend, SearchViewPerson, SearchViewFriends, RequestList, RequestSend, RequestCancel, RequestAccepted, RequestRemove, DeleteFriend, BlockUser, BlockList, UnblockUser
 
 friends_urls = ([
     path('', FriendsView.as_view(), name='list'),
@@ -9,6 +9,7 @@ friends_urls = ([
     path('request-list/', RequestList.as_view(), name='request_list'),
     path('block-list/', BlockList.as_view(), name='block_list'),
     path('request-send/<str:slug>/', RequestSend, name='request_send'),
+    path('request-cancel/<str:friend_code>/', RequestCancel, name='request_cancel'),
     path('request-accepted/<int:id_relation>/<slug:friend_code>/', RequestAccepted, name='request_accepted'),
     path('request-remove/<int:id_relation>/<slug:friend_code>/', RequestRemove, name='request_remove'),
     path('delete-friend/<slug:friend_name>/', DeleteFriend, name='delete_friend'),

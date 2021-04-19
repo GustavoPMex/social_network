@@ -22,47 +22,75 @@ class FriendsView(TemplateView):
     template_name = 'friends/friends.html'
 
 class ProfileFriend(DetailView):
-    slug_field = 'friend_user_code'
     model = Profile
+    slug_field = 'friend_user_code'
     template_name = 'friends/friend_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileFriend, self).get_context_data(**kwargs)
+        current_user = self.request.user
+        friend_user = context['object'].user_name
+
+        relation_op_one = Relationship.objects.filter(sender__user_name__username = current_user,
+                                                      receiver__user_name__username = friend_user)
+
+        relation_op_two = Relationship.objects.filter(sender__user_name__username=friend_user,
+                                                      receiver__user_name__username=current_user)
+
+        if relation_op_one:
+            element_relation = relation_op_one.first()
+
+            if element_relation.status == 'send':
+                context['relation'] = 'user_cancel'
+                context['id_relation'] = element_relation.id
+            else:
+                context['relation'] = 'no_request'
+
+        elif relation_op_two:
+            element_relation = relation_op_two.first()
+
+            if element_relation.status == 'send':
+                context['relation'] = 'user_accept'
+                context['id_relation'] = element_relation.id
+            else:
+                context['relation'] = 'no_request'
+
+        else:
+            context['relation'] = 'no exists'
+
+        return context
 
     def dispatch(self, request, *args, **kwargs):
         #Solicitamos el objeto del detail view
         obj = super(ProfileFriend, self).get_object()
-        #En este caso es instancia de la clase profile, que tiene un atributo user_name
-        relation_op_one = Relationship.objects.filter(sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
-        #En este caso es instancia de la clase profile, que tiene un atributo user_name
-        #La razon de por qué se piden dos filter, es por que el sender y receiver pueden variar de posición, dependiendo quien envió la solicitud de amistad
-        relation_op_two = Relationship.objects.filter(sender__user_name__username=self.request.user, receiver__user_name__username=obj.user_name)
-        #Declaramos result
-        result = ''
-
-        if relation_op_one:
-            #Filtramos los values, pedimos el elemento en la posición 0 (que es un dict) y posteiormente pedimos el value con ayuda del key "status"
-            result = relation_op_one.values("status")[0]['status']
-        elif relation_op_two:
-            #Filtramos los values, pedimos el elemento en la posición 0 (que es un dict) y posteiormente pedimos el value con ayuda del key "status"
-            result = relation_op_two.values("status")[0]['status']
+        #Si el nombre del obj coincide con el usuario actual, redireccionamos a su profile
+        if self.request.user == obj.user_name:
+            return redirect('profile_core:profile')
         else:
-            #En caso de que ninguno se cumpla, se prohibe la entrada
-            return super(ProfileFriend, self).dispatch(request, *args, **kwargs)
-            #FALTA RESOLVER ÉSTO
+            #En este caso es instancia de la clase profile, que tiene un atributo user_name
+            relation_op_one = Relationship.objects.filter(sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
+            #En este caso es instancia de la clase profile, que tiene un atributo user_name
+            #La razon de por qué se piden dos filter, es por que el sender y receiver pueden variar de posición, dependiendo quien envió la solicitud de amistad
+            relation_op_two = Relationship.objects.filter(sender__user_name__username=self.request.user, receiver__user_name__username=obj.user_name)
+            #Declaramos result
+            result = ''
 
-        if result == 'blocked':
-            #Si el objeto filtrado(status) es blocked, se le prohibe el acceso
-            return HttpResponseNotAllowed(['GET', 'POST'])
-        else:
-            #Retornamos del objeto de detail view de manera normal
-            return super(ProfileFriend, self).dispatch(request, *args, **kwargs)
- 
+            if relation_op_one:
+                #Filtramos los values, pedimos el elemento en la posición 0 (que es un dict) y posteiormente pedimos el value con ayuda del key "status"
+                result = relation_op_one.values("status")[0]['status']
+            elif relation_op_two:
+                #Filtramos los values, pedimos el elemento en la posición 0 (que es un dict) y posteiormente pedimos el value con ayuda del key "status"
+                result = relation_op_two.values("status")[0]['status']
+            else:
+                #En caso de que ninguno se cumpla, se prohibe la entrada
+                return super(ProfileFriend, self).dispatch(request, *args, **kwargs)
 
-    # def get_object(self, *args, **kwargs):
-    #     obj = super(ProfileFriend, self).get_object(*args,**kwargs)
-    #     relation_op_one = get_object_or_404(Relationship, sender__user_name__username=obj.user_name, receiver__user_name__username=self.request.user)
-    #     if relation_op_one.status == 'blocked':
-    #         return HttpResponseNotAllowed(['GET', 'POST']) 
-    #     else:
-    #         return HttpResponseNotAllowed(['GET', 'POST']) 
+            if result == 'blocked':
+                #Si el objeto filtrado(status) es blocked, se redirecciona a la lista de amigos
+                return redirect('friends:list')
+            else:
+                #Retornamos del objeto de detail view de manera normal
+                return super(ProfileFriend, self).dispatch(request, *args, **kwargs)
 
 class RequestList(ListView):
     model = Relationship
@@ -82,28 +110,30 @@ class BlockList(ListView):
         result = Relationship.objects.filter(sender__user_name__username=self.request.user, status='blocked')
         return result
 
-def RequestSend(request, slug):
-    # Pruebas con ayuda del GET
-    # if request.method == 'GET':
-    #     pass
-        
+def RequestSend(request, slug): 
     if request.method == 'POST':
-        form = RelationshipForms(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.sender = request.user.profile
-            #Filtrando al usuario que tenga coincidencia con el nombre que se le pasó atraves del slug
-            user_in_profile = Profile.objects.only('user_name').get(user_name__username=slug).user_name
-            #Pasamos la instancia del usuario del profile
-            form.receiver = user_in_profile.profile
+        relation_op_one = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=slug)
+        relation_op_two = Relationship.objects.filter(sender__user_name__username=slug, receiver__user_name__username=request.user)
 
-            form.status = 'send'
+        if relation_op_one or relation_op_two:
+            return redirect('friends:list')
+        else:
+            form = RelationshipForms(request.POST)
+            if form.is_valid():
+                form = form.save(commit=False)
+                form.sender = request.user.profile
+                #Filtrando al usuario que tenga coincidencia con el nombre que se le pasó atraves del slug
+                user_in_profile = Profile.objects.only('user_name').get(user_name__username=slug).user_name
+                #Pasamos la instancia del usuario del profile
+                form.receiver = user_in_profile.profile
 
-            form.save()
+                form.status = 'send'
 
-        #Se redirecciona al mismo perfil
-        # return redirect(reverse_lazy('friends:profile', slug=user_in_profile.profile.friend_user_code) + '?send')
-        return redirect(reverse_lazy('friends:profile', kwargs={'slug':user_in_profile.profile.friend_user_code}) + '?send')
+                form.save()
+
+            #Se redirecciona al mismo perfil
+            # return redirect(reverse_lazy('friends:profile', slug=user_in_profile.profile.friend_user_code) + '?send')
+            return redirect(reverse_lazy('friends:profile', kwargs={'slug':user_in_profile.profile.friend_user_code}) + '?send')
 
     else:
         form = RelationshipForms()
@@ -114,6 +144,15 @@ def RequestSend(request, slug):
     }
     
     return render(request, 'friends/send_request.html', context)
+
+def RequestCancel(request, friend_code):
+    relation_friend = Relationship.objects.filter(sender__friend_user_code=request.user.profile.friend_user_code, receiver__friend_user_code=friend_code)
+    
+    if relation_friend:
+        relation_friend.delete()
+        return redirect(reverse_lazy('friends:profile', kwargs={'slug':friend_code})) 
+    else:
+        return HttpResponseForbidden()
 
 def RequestAccepted(request, id_relation, friend_code):
     obj_relationship = get_object_or_404(Relationship, id=id_relation)
@@ -126,13 +165,13 @@ def RequestAccepted(request, id_relation, friend_code):
 
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
-    
-def RequestRemove(request, id_relation, friend_code):
-    obj_relationship = get_object_or_404(Relationship, id=id_relation)
-    friend_by_code = get_object_or_404(Profile, friend_user_code=friend_code)
 
-    if obj_relationship.sender.friend_user_code == friend_code:
-        obj_relationship.delete()
+def RequestRemove(request, id_relation, friend_code):
+ 
+    relation_request = Relationship.objects.filter(id=id_relation, sender__friend_user_code=friend_code, receiver__friend_user_code=request.user.profile.friend_user_code)
+
+    if relation_request:
+        relation_request.first().delete()
         return redirect('friends:request_list')
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -203,27 +242,6 @@ def UnblockUser(request, friend_name):
     }
 
     return render(request, 'friends/unblock_user.html', context)
-    
-
-
-
-
-# class RequestSend(CreateView):
-#     model = Relationship
-#     form_class = RelationshipForms
-#     template_name = 'friends/send_request.html'
-    
-#     def get_success_url(self):
-#         return reverse_lazy('friends:list')
-
-#     def form_valid(self, form):
-#         obj = form.save(commit=False)
-#         obj.sender = self.request.user.profile
-#         receiver_contain = Relationship.object.get(receiver=self.kwargs.get('slug', None))
-#         print(receiver_contain)
-#         obj.status = 'send'
-#         return super(RequestSend, self).form_valid(form)
-
  
 class SearchViewPerson(ListView):
     model = Profile
@@ -231,22 +249,33 @@ class SearchViewPerson(ListView):
     context_object_name = 'list_results'
 
     def get_queryset(self):
-        query = super(SearchViewPerson, self).get_queryset()
         query = self.request.GET.get('search')
 
         if query:
             query_result = Profile.objects.filter(friend_user_code=query)
-
             if query_result:
-                result = query_result
+                relation_op_one = Relationship.objects.filter(sender__user_name__username=self.request.user, receiver__user_name__username=query_result.first().user_name)
+                relation_op_two = Relationship.objects.filter(sender__user_name__username=query_result.first().user_name, receiver__user_name__username=self.request.user)
+                relation_blocked = False
+
+                if relation_op_one:
+                    if relation_op_one.first().status == 'blocked':
+                        relation_blocked = True
+                elif relation_op_two:
+                    if relation_op_two.first().status == 'blocked':
+                        relation_blocked = True
+                
+                if relation_blocked:
+                    result = 'no results'
+                else:
+                    result = query_result
             else:
                 result = 'no results'
         else:
             result = 'no results'
         
         return result
-    
-    
+       
 class SearchViewFriends(ListView):
     model = Profile
     template_name = 'friends/search_friend_list.html'
@@ -276,3 +305,18 @@ class SearchViewFriends(ListView):
         return result
 
 
+# class RequestSend(CreateView):
+#     model = Relationship
+#     form_class = RelationshipForms
+#     template_name = 'friends/send_request.html'
+    
+#     def get_success_url(self):
+#         return reverse_lazy('friends:list')
+
+#     def form_valid(self, form):
+#         obj = form.save(commit=False)
+#         obj.sender = self.request.user.profile
+#         receiver_contain = Relationship.object.get(receiver=self.kwargs.get('slug', None))
+#         print(receiver_contain)
+#         obj.status = 'send'
+#         return super(RequestSend, self).form_valid(form)
