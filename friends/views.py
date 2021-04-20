@@ -33,13 +33,11 @@ class ProfileFriend(DetailView):
 
         relation_op_one = Relationship.objects.filter(sender__user_name__username = current_user,
                                                       receiver__user_name__username = friend_user)
-
         relation_op_two = Relationship.objects.filter(sender__user_name__username=friend_user,
                                                       receiver__user_name__username=current_user)
-
+        
         if relation_op_one:
             element_relation = relation_op_one.first()
-
             if element_relation.status == 'send':
                 context['relation'] = 'user_cancel'
                 context['id_relation'] = element_relation.id
@@ -48,15 +46,11 @@ class ProfileFriend(DetailView):
 
         elif relation_op_two:
             element_relation = relation_op_two.first()
-
             if element_relation.status == 'send':
                 context['relation'] = 'user_accept'
                 context['id_relation'] = element_relation.id
             else:
                 context['relation'] = 'no_request'
-
-        else:
-            context['relation'] = 'no exists'
 
         return context
 
@@ -114,7 +108,6 @@ def RequestSend(request, slug):
     if request.method == 'POST':
         relation_op_one = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=slug)
         relation_op_two = Relationship.objects.filter(sender__user_name__username=slug, receiver__user_name__username=request.user)
-
         if relation_op_one or relation_op_two:
             return redirect('friends:list')
         else:
@@ -126,15 +119,11 @@ def RequestSend(request, slug):
                 user_in_profile = Profile.objects.only('user_name').get(user_name__username=slug).user_name
                 #Pasamos la instancia del usuario del profile
                 form.receiver = user_in_profile.profile
-
                 form.status = 'send'
-
                 form.save()
-
             #Se redirecciona al mismo perfil
             # return redirect(reverse_lazy('friends:profile', slug=user_in_profile.profile.friend_user_code) + '?send')
             return redirect(reverse_lazy('friends:profile', kwargs={'slug':user_in_profile.profile.friend_user_code}) + '?send')
-
     else:
         form = RelationshipForms()
 
@@ -146,8 +135,9 @@ def RequestSend(request, slug):
     return render(request, 'friends/send_request.html', context)
 
 def RequestCancel(request, friend_code):
-    relation_friend = Relationship.objects.filter(sender__friend_user_code=request.user.profile.friend_user_code, receiver__friend_user_code=friend_code)
-    
+    current_user_code = request.user.profile.friend_user_code
+    relation_friend = Relationship.objects.filter(sender__friend_user_code=current_user_code,
+                                                  receiver__friend_user_code=friend_code)
     if relation_friend:
         relation_friend.delete()
         return redirect(reverse_lazy('friends:profile', kwargs={'slug':friend_code})) 
@@ -162,13 +152,14 @@ def RequestAccepted(request, id_relation, friend_code):
         obj_relationship.status = 'accepted'
         obj_relationship.save()
         return redirect('friends:list')
-
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 def RequestRemove(request, id_relation, friend_code):
- 
-    relation_request = Relationship.objects.filter(id=id_relation, sender__friend_user_code=friend_code, receiver__friend_user_code=request.user.profile.friend_user_code)
+    current_user_code = request.user.profile.friend_user_code
+    relation_request = Relationship.objects.filter(id=id_relation,
+                                                   sender__friend_user_code=friend_code,
+                                                   receiver__friend_user_code=current_user_code)
 
     if relation_request:
         relation_request.first().delete()
@@ -192,7 +183,6 @@ def DeleteFriend(request, friend_name):
         result.status = 'deleted'
         result.save()
         result.delete()
-
         return redirect('friends:list') 
 
     context = {
@@ -236,7 +226,6 @@ def UnblockUser(request, friend_name):
         relation = Relationship.objects.filter(sender__user_name__username=request.user, receiver__user_name__username=friend_name).first()
         relation.delete()
         return redirect('friends:block_list')
-    
     context = {
         'friend_name':friend_name
     }
@@ -250,29 +239,34 @@ class SearchViewPerson(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('search')
+        #El valor por default será "no results"
+        result = 'no results'
 
         if query:
             query_result = Profile.objects.filter(friend_user_code=query)
-            if query_result:
-                relation_op_one = Relationship.objects.filter(sender__user_name__username=self.request.user, receiver__user_name__username=query_result.first().user_name)
-                relation_op_two = Relationship.objects.filter(sender__user_name__username=query_result.first().user_name, receiver__user_name__username=self.request.user)
-                relation_blocked = False
+            current_user = self.request.user
+            query_friend = query_result.first()
 
+            if query_result:
+                relation_op_one = Relationship.objects.filter(sender__user_name__username=current_user,
+                                                             receiver__user_name__username=query_friend.user_name)
+                relation_op_two = Relationship.objects.filter(sender__user_name__username=query_friend.user_name,
+                                                             receiver__user_name__username=current_user)
+                #Si el usuario está autorizado, es decir que no esté bloqueado, mostramos resultado de la busqueda
+                auth_user = True
+
+                #En éstas condiciones, si el usuario tiene status "blocked", entonces reasignamos el valor a False para negar el permiso
                 if relation_op_one:
                     if relation_op_one.first().status == 'blocked':
-                        relation_blocked = True
+                        auth_user = False
+
                 elif relation_op_two:
                     if relation_op_two.first().status == 'blocked':
-                        relation_blocked = True
+                        auth_user = False
                 
-                if relation_blocked:
-                    result = 'no results'
-                else:
+                #Verificamos que el usuario esté autorizado
+                if auth_user:
                     result = query_result
-            else:
-                result = 'no results'
-        else:
-            result = 'no results'
         
         return result
        
@@ -283,24 +277,18 @@ class SearchViewFriends(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('search_friend')
-
+        #El valor predeterminado será "no results"
+        result = 'no results'
         if query:
             query_result = Profile.objects.filter(user_name__username__startswith=query)
-
             if query_result: 
-
                 for element in query_result:
+                    #Comprobamos si el usuario actual está en la lista de amigos del usuario que se está buscando
                     if self.request.user not in element.friends.all():
+                        #Excluimos al usuario si no está en la lista de amigos
                         query_result = query_result.exclude(friend_user_code=element.friend_user_code)
-
                 if query_result:
                     result = query_result
-                else:
-                    result = 'no results'
-            else:
-                result = 'no results' 
-        else:
-            result = 'no results'
         
         return result
 
