@@ -17,9 +17,9 @@
                         <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
                     </div>
                     <div class="col-12 col-lg-9 content-friends-actions">
-                        <p class="p-friends-body ">{{element.receiver.user_name}}</p>
+                        <p class="p-block-list ">{{element.receiver.user_name}}</p>
                         <div class="friends-action-body d-md-inline">
-                            <a class="friends-action messages-icon" onclick="return abrir_modal('{% url 'friends:unblock_user' element.receiver.user_name %}')"  href="#" >Unblock</a>
+                            <a class="friends-action messages-icon" onclick="return abrir_modal('{% url 'friends:unblock_user' element.receiver.user_name %}')"  href="#" ><button type="button" class="btn btn-warning">Unblock</button></a>
                         </div>
                     </div>
                 </div>

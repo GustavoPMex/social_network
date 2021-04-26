@@ -26,13 +26,13 @@
         <ion-icon class="social-icon-profile mx-1 mx-md-2"  name="key"></ion-icon>
     
             {% if relation == 'user_cancel' %}
-                <a onclick="return abrir_modal('{% url 'friends:request_cancel' object.friend_user_code %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="close-circle"></ion-icon></a> 
+                <a onclick="return abrir_modal('{% url 'friends:request_cancel' object.friend_user_code %}')" href="#" class="social-link-profile"><button type="button" class="btn btn-danger btn-request">Cancel</button></a> 
             {% elif relation == 'user_accept' %}
-                <a onclick="return abrir_modal('{% url 'friends:request_accepted' id_relation object.friend_user_code %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="walk"></ion-icon></a> 
+                <a onclick="return abrir_modal('{% url 'friends:request_accepted' id_relation object.friend_user_code %}')" href="#" class="social-link-profile"><button type="button" class="btn btn-primary  btn-request">Accept</button></a> 
             {% elif relation == 'request' %}
-                <a onclick="return abrir_modal('{% url 'friends:request_send' object.user_name %}')" href="#" class="social-link-profile instagram"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
+                <a onclick="return abrir_modal('{% url 'friends:request_send' object.user_name %}')" href="#" class="social-link-profile"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
             {% endif %}
-        <a class="friends-action block-icon" onclick="return abrir_modal('{% url 'friends:block_user' object.user_name %}')"  href="#"><ion-icon name="remove-circle"></ion-icon></a>
+        <a class="friends-action block-icon" onclick="return abrir_modal('{% url 'friends:block_user' object.user_name %}')"  href="#"><ion-icon name="eye-off"></ion-icon></a>
     </div>
 </div>
 

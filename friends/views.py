@@ -17,9 +17,14 @@ from django.db.models import Q
 
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
- 
+
 class FriendsView(TemplateView):
     template_name = 'friends/friends.html'
+    def get_context_data(self, **kwargs):
+        context = super(FriendsView, self).get_context_data(**kwargs)
+        num_requests = Relationship.objects.filter(receiver__user_name__username=self.request.user, status='send').count()
+        context['num_requests'] = num_requests
+        return context
 
 class ProfileFriend(DetailView):
     model = Profile

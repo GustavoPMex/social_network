@@ -175,8 +175,10 @@ input[type='checkbox']{
 }
 
 .social-icon-profile{
-    font-size: 2em;
+    font-size: 2.5em;
 }
+
+
 
 /* modal Friends */
 .friends-list-profile{
@@ -364,7 +366,8 @@ input[type='checkbox']{
 }
 
 .link-friends-body{
-    font-size: 40px;
+    
+    font-size: 35px;
     text-decoration: none;
     color: var(--light);
     transition: .1s;
@@ -379,7 +382,7 @@ input[type='checkbox']{
 }
 
 .friends-action-body{
-
+    margin-top: 1em;
 }
 
 .messages-icon{
@@ -402,11 +405,11 @@ input[type='checkbox']{
 }
 
 .content-friends-actions{
-    text-align: left;
+    text-align: center;
 }
 
 .friends-action{
-    font-size:25px;
+    font-size:30px;
     margin: 0 10px;
     transition: .1s;
 }
@@ -557,8 +560,89 @@ form p span{
     
 }
 
+/* Friends modify */
+
+.friends-links{
+    text-decoration: none;
+    color: white;
+    transition: .1s;
+}
+
+.list-request:hover{
+    color: var(--secondary);
+}
+
+.list-blocks:hover{
+    color: red;
+}
+
+.btn-accept{
+    font-size:.6em !important;
+    width: 5em;
+
+}
+
+.btn-danger{
+    border: none !important;
+    transition: .1s !important;
+}
+
+.btn-danger:hover{
+    background-color: rgb(145, 0, 0) !important;
+}
+
+.btn-request{
+    margin-bottom: 2em;
+}
+
+.btn-primary{
+    background-color: var(--primary) !important;
+    border: none !important;
+    transition: .1s !important;
+}
+
+.btn-primary:hover{
+    background-color: #281a5a !important;
+}
+
+.content-img-list-friends{
+    text-align: right;
+}
+
+.content-list-friends{
+    padding-top: 1em;
+    text-align: left;
+}
+
+
+
+.requests{
+
+}
+
+/* Block list */
+.p-block-list{
+    color: white;
+    font-size: 2em;
+}
+
+.btn-warning{
+    font-size: .6em !important;
+
+}
+
+
+
 /* Less than 990 */
 @media screen and (max-width: 990px){
+    .content-img-list-friends{
+        text-align: center;
+    }
+
+    .content-list-friends{
+        text-align: center;
+    }
+
     .content-friends-actions{
         text-align: center;
     }
