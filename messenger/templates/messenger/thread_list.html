@@ -6,7 +6,7 @@
 {% block content %}
 
 <div class="row">
-    {% if request.user.threads.all %}
+    {% if request.user.threads.all.first.messages.all %}
         <div class="content-friends-msg col-4 col-lg-3">
             <div class="content-list">
                 <div class="element-list">
@@ -35,6 +35,7 @@
 
         <div class="chat-content  text-center  col-8 col-lg-9">
             <p class="p-chat-content">Select a conversation</p>
+
         </div>
     {% else %}
 

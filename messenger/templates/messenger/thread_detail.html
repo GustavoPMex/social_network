@@ -33,7 +33,6 @@
             </div>
         </div>
     </div>
-
     <div class="chat-content  text-center  col-8 col-lg-9">
         {% for user in thread.users.all %}
             {% if user != request.user %}
@@ -50,7 +49,6 @@
             </div>
             <textarea id="content-chat" class="form-control mb-2 input-chat" rows="2" placeholder="Write a message"></textarea>
             <button id="send" class="btn btn-primary btn-block" disabled>Send message</button>
-
             <script>
                 var send = document.getElementById('send');
                 send.addEventListener('click', function(){
@@ -59,14 +57,13 @@
                         const url = "{% url 'messenger:add' thread.pk %}" + '?content='+content;
                         fetch(url,{'credentials':'include'}).then(response => response.json()).then(function(data){
                             if (data.created){
-                                document.getElementById('content').value = '';
+                                document.getElementById('content-chat').value = '';
                                 send.disabled = true;
                                 var message = document.createElement('div');
                                 message.classList.add('mine', 'mb-3');
                                 message.innerHTML = '<small><i> Hace unos segundos</i></small><br>'+decodeURIComponent(content);
                                 document.getElementById('thread').appendChild(message);
-                                ScrollBottomInThread();
-
+                                scrollBottomInThread();
                                 if (data.first){
                                     window.location.href = '{% url 'messenger:detail' thread.pk %}'
                                 }
@@ -76,7 +73,6 @@
                         })
                     }
                 })
-
                 var content = document.getElementById('content-chat');
                 content.addEventListener('keyup', function(){
                     if(!this.checkValidity() || !this.value){
@@ -85,7 +81,6 @@
                         send.disabled = false;
                     }
                 })
-
                 function scrollBottomInThread(){
                     var thread = document.getElementById('thread');
                     thread.scrollTop = thread.scrollHeight;
@@ -93,9 +88,5 @@
                 scrollBottomInThread()
             </script>
     </div>
-
 </div>
-
-
-
 {% endblock %}
