@@ -5,6 +5,8 @@
 
 {% block content %}
 
+{% include 'messenger/includes/modal.html' %}
+
 <div class="row">
     <div class="content-friends-msg col-4 col-lg-3">
         <div class="content-list">
@@ -35,19 +37,19 @@
     <div class="chat-content  text-center  col-8 col-lg-9">
         {% for user in thread.users.all %}
             {% if user != request.user %}
-                <h4 class="my-2">Mensajes con <a class="link-name-chat" href="#">{{user}}</a></h4>
+                <h4 class="my-2"><a class="link-name-chat" href="{% url 'friends:profile' user.profile.friend_user_code %}">{{user}}</a> - <a onclick="return abrir_modal('{% url 'messenger:delete' object.id %}')" class="link-delete-chat"  href="#"><ion-icon name="trash"></ion-icon></a></h4>
             {% endif %}
         {% endfor %}
             <div class="thread" id="thread">
                 {% for message in object.messages.all %}
                     <div class="{% if request.user == message.user %} mine {% else %} other {% endif %} mb-3">
-                        <small><i>Hace {{thread.messages.last.created|timesince}} </i></small><br>
+                        <small><i>{{thread.messages.last.created|timesince}} ago</i></small><br>
                         {{message.content}}
                     </div>
                 {% endfor %}
             </div>
-            <textarea id="content-chat" class="form-control mb-2 input-chat" rows="2" placeholder="Escribe aqui tu mensaje"></textarea>
-            <button id="send" class="btn btn-primary btn-block" disabled>Enviar mensaje</button>
+            <textarea id="content-chat" class="form-control mb-2 input-chat" rows="2" placeholder="Write a message"></textarea>
+            <button id="send" class="btn btn-primary btn-block" disabled>Send message</button>
 
             <script>
                 var send = document.getElementById('send');

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
+from django.views.generic.edit import DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
 from .models import Thread, Message
@@ -19,6 +20,11 @@ class ThreadDetail(DetailView):
         if self.request.user not in obj.users.all():
             raise Http404
         return obj
+
+class DeleteThread(DeleteView):
+    model = Thread
+    template_name = 'messenger/delete_chat.html'
+    success_url = reverse_lazy('messenger:list')
 
 def add_message(request, pk):
     json_response = {'created':False}

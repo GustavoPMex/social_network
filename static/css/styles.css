@@ -102,7 +102,7 @@ div .activate{
 
 .content-profile{
     background-color: black;
-    padding: 3em;
+    padding: 2em;
     border-radius: 10px;
 }
 
@@ -664,6 +664,7 @@ form p span{
 
 .chat-content{
     background-color: rgb(95, 95, 95);
+    border-radius: 5px
 }
 
 .p-chat-content{
@@ -728,6 +729,16 @@ form p span{
     color: var(--secondary-dark);
 }
 
+.link-delete-chat{
+    color: red;
+    transition: .1s;
+}
+
+.link-delete-chat:hover{
+    color: rgb(179, 0, 0);
+}
+
+
 .element-list{
     word-wrap: break-word;
     margin: 2em 0;
@@ -753,6 +764,16 @@ form p span{
 }
 
 .p-list-msg:hover{
+    color: var(--secondary-dark);
+}
+
+.link-messenger-friends{
+    text-decoration: none;
+    color: var(--secondary);
+    transition: .1s;
+}
+
+.link-messenger-friends:hover{
     color: var(--secondary-dark);
 }
 
