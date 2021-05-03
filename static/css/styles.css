@@ -6,6 +6,29 @@
     --grey: #b1b1b1;
 }
 
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+
 body{
     /* EL OVERFLOW SIRVE PARA EVITAR EL SCROLL */
     /* SE TIENE QUE TENER CUIDADO CON ÉSTO, YA QUE ES PARA HACER APARECER EL SCROLL EN ALGUNA SECCION */
@@ -631,6 +654,107 @@ form p span{
 
 }
 
+/* Messages */
+
+.content-msgs{
+    background-color: black;
+    padding: 2em;
+    border-radius: 10px;
+}
+
+.chat-content{
+    background-color: rgb(95, 95, 95);
+}
+
+.p-chat-content{
+    margin: 3em auto;
+    font-size: 40px;
+    color: white;
+}
+
+/* Messenger */
+
+.img-list-msg{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.content-friends-msg{
+    overflow-y: scroll;
+    height: 550px;
+}
+
+/* CHAT STYLE */
+.thread{
+    overflow-y: scroll;
+    height:370px;
+    padding:0 0.5em;
+} 
+
+.input-chat{
+    height: 5em !important;
+    margin: 6px 0 0 0;
+    padding: 5px !important;
+}
+
+.mine{
+    word-wrap: break-word;
+    background-color:rgba(255, 255, 255, 0.767);
+    padding:0 0.5em 0.25em;
+    width:92%;
+    margin-left:8%;
+    border-radius: .5em;
+    font-size: 18px;
+}
+
+.other{
+    word-wrap: break-word;
+    background-color:#949494;
+    color: white;
+    padding:0 0.5em 0.25em;
+    width:92%;
+    border-radius: .5em;
+    font-size: 18px;
+}
+
+.link-name-chat{
+    text-decoration: none;
+    color: var(--secondary);
+    transition: .1s;
+}
+
+.link-name-chat:hover{
+    color: var(--secondary-dark);
+}
+
+.element-list{
+    word-wrap: break-word;
+    margin: 2em 0;
+}
+
+.container-link{
+    text-decoration: none;
+}
+
+.content-msgs{
+    padding: .5em 1.5em;
+}
+
+.content-img-friend{
+    width: 80px;
+    height: 80px;
+    margin: 0em;
+}
+
+.p-list-msg{
+    font-size: 20px;
+    color: var(--secondary);
+}
+
+.p-list-msg:hover{
+    color: var(--secondary-dark);
+}
 
 
 /* Less than 990 */
@@ -646,6 +770,42 @@ form p span{
     .content-friends-actions{
         text-align: center;
     }
+
+    /* Messenger */
+    .content-msgs{
+        padding: .5em 1.5em;
+    }
+
+    .content-img-friend{
+        width: 80px;
+        height: 80px;
+        margin: 1em 0;
+    }
+    
+    .img-list-msg{
+    }
+
+    .content-friends-msg{
+        height: 500px;
+    }
+
+    /* CHAT STYLE */
+    .thread{
+        height:300px;
+        padding:0 0.5em;
+    } 
+
+    .input-chat{
+        height: 5em !important;
+        margin: 8px 0 0 0;
+        padding: 5px !important;
+    }
+
+    .p-chat-content{
+        margin: 4em auto;
+        font-size: 30px;
+    }
+    
 }
 
 
@@ -718,6 +878,41 @@ form p span{
     .singup-p-login{
         font-size: 18px;
     }
+
+    /* Messenger */
+    .content-msgs{
+        padding: 1em;
+    }
+
+    .content-img-friend{
+        width: 70px;
+        height: 70px;
+        margin: 1em 0;
+    }
+    
+    .img-list-msg{
+    }
+
+    .content-friends-msg{
+        height: 400px;
+    }
+
+    /* CHAT STYLE */
+    .thread{
+        height:220px;
+        padding:0 0.5em;
+    } 
+    
+    .p-list-msg{
+        display: none;
+    }
+
+    .p-chat-content{
+        margin: 4em auto;
+        font-size: 25px;
+    }
+
+
 
 }
 

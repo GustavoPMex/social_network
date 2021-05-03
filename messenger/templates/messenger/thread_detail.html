@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Messenger{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="content-friends-msg col-4 col-lg-3">
+        <div class="content-list">
+            <div class="element-list">
+                {% for thread in request.user.threads.all %}
+                    {% if thread.messages.all|length > 0 %}
+                        {% for user in thread.users.all %}
+                            {% if user != request.user %}
+                                <a class="container-link" href="{% url 'messenger:detail' thread.pk %}">
+                                    <div class="content-img-friend mx-auto">
+                                        {% if user.profile.img_profile %}
+                                            <img class="img-list-msg" src="{{user.profile.img_profile.url}}" alt="Gustavo" title="Gustavo">
+                                        {% else %}
+                                            {% load static %}
+                                            <img class="img-list-msg" src="{% static '/img/profile-default.jpg' %}" alt="Gustavo" title="Gustavo">
+                                        {% endif %}
+                                    </div>
+                                    <p class="p-list-msg text-center">{{user.user_name}}</p>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-content  text-center  col-8 col-lg-9">
+        {% for user in thread.users.all %}
+            {% if user != request.user %}
+                <h4 class="my-2">Mensajes con <a class="link-name-chat" href="#">{{user}}</a></h4>
+            {% endif %}
+        {% endfor %}
+            <div class="thread" id="thread">
+                {% for message in object.messages.all %}
+                    <div class="{% if request.user == message.user %} mine {% else %} other {% endif %} mb-3">
+                        <small><i>Hace {{thread.messages.last.created|timesince}} </i></small><br>
+                        {{message.content}}
+                    </div>
+                {% endfor %}
+            </div>
+            <textarea id="content-chat" class="form-control mb-2 input-chat" rows="2" placeholder="Escribe aqui tu mensaje"></textarea>
+            <button id="send" class="btn btn-primary btn-block" disabled>Enviar mensaje</button>
+
+            <script>
+                var send = document.getElementById('send');
+                send.addEventListener('click', function(){
+                    var content = encodeURIComponent(document.getElementById('content-chat').value);
+                    if (content.length > 0){
+                        const url = "{% url 'messenger:add' thread.pk %}" + '?content='+content;
+                        fetch(url,{'credentials':'include'}).then(response => response.json()).then(function(data){
+                            if (data.created){
+                                document.getElementById('content').value = '';
+                                send.disabled = true;
+                                var message = document.createElement('div');
+                                message.classList.add('mine', 'mb-3');
+                                message.innerHTML = '<small><i> Hace unos segundos</i></small><br>'+decodeURIComponent(content);
+                                document.getElementById('thread').appendChild(message);
+                                ScrollBottomInThread();
+
+                                if (data.first){
+                                    window.location.href = '{% url 'messenger:detail' thread.pk %}'
+                                }
+                            }else{
+                                console.log('Algo ha fallado')
+                            }
+                        })
+                    }
+                })
+
+                var content = document.getElementById('content-chat');
+                content.addEventListener('keyup', function(){
+                    if(!this.checkValidity() || !this.value){
+                        send.disabled = true;
+                    } else {
+                        send.disabled = false;
+                    }
+                })
+
+                function scrollBottomInThread(){
+                    var thread = document.getElementById('thread');
+                    thread.scrollTop = thread.scrollHeight;
+                }
+                scrollBottomInThread()
+            </script>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

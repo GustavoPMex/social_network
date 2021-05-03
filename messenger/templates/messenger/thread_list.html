@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Messenger{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="content-friends-msg col-4 col-lg-3">
+        <div class="content-list">
+            <div class="element-list">
+                {% for thread in request.user.threads.all %}
+                    {% if thread.messages.all|length > 0 %}
+                        {% for user in thread.users.all %}
+                            {% if user != request.user %}
+                                <a class="container-link" href="{% url 'messenger:detail' thread.pk %}">
+                                    <div class="content-img-friend mx-auto">
+                                        {% if user.profile.img_profile %}
+                                            <img class="img-list-msg" src="{{user.profile.img_profile.url}}" alt="Gustavo" title="Gustavo">
+                                        {% else %}
+                                            {% load static %}
+                                            <img class="img-list-msg" src="{% static '/img/profile-default.jpg' %}" alt="Gustavo" title="Gustavo">
+                                        {% endif %}
+                                    </div>
+                                    <p class="p-list-msg text-center">{{user.user_name}}</p>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-content  text-center  col-8 col-lg-9">
+        <p class="p-chat-content">Select a conversation</p>
+    </div>
+</div>
+
+{% endblock %}

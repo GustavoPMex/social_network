@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from core.urls import urls_core
 from friends.urls import friends_urls
+from messenger.urls import messenger_urls
 from django.conf import settings
 
 urlpatterns = [
     path('', include(urls_core)),
     path('friends/', include(friends_urls)), 
+    path('messenger/', include(messenger_urls)),
     path('admin/', admin.site.urls),
 
     # Paths registration
