@@ -19,13 +19,13 @@
             </div>
             <div class="menu d-none d-md-block">
                 <a href="{% url 'profile_core:profile' %}" class="d-block p-3 a-menu {% if '/profile/' in request.path or request.path == '/'  %}activate{% endif %}"><ion-icon name="person" class="mx-3 lead"></ion-icon> Profile</a>
-                <a href="" class="d-block p-3 a-menu"><ion-icon name="flash" class="mx-3 lead"></ion-icon> News</a>
+                <a href="{% url 'news:home' %}" class="d-block p-3 a-menu {% if '/news/' in request.path %}activate{% endif %}"><ion-icon name="flash" class="mx-3 lead"></ion-icon> News</a>
                 <a href="{% url 'friends:list' %}" class="d-block p-3 a-menu {% if '/friends/' in request.path %}activate{% endif %}"><ion-icon name="people" class="mx-3 lead"></ion-icon> Friends</a>
                 <a href="{% url 'messenger:list' %}" class="d-block p-3 a-menu {% if '/messenger/' in request.path %}activate{% endif %}"><ion-icon name="mail" class="mx-3 lead"></ion-icon> Messages</a>
             </div>
             <div class="menu d-md-none mx-auto text-center w-100">
                 <a href="{% url 'profile_core:profile' %}" class=" m-1 a-menu {% if '/profile/' in request.path %}activate{% endif %}"><ion-icon name="person" class="mx-3 size-icon"></ion-icon></a>
-                <a href="" class=" m-1 a-menu"><ion-icon name="flash" class="mx-3 size-icon"></ion-icon></a>
+                <a href="{% url 'news:home' %}" class=" m-1 a-menu {% if '/news/' in request.path %}activate{% endif %}"><ion-icon name="flash" class="mx-3 size-icon"></ion-icon></a>
                 <a href="{% url 'friends:list' %}" class=" m-1 a-menu {% if '/friends/' in request.path %}activate{% endif %}" ><ion-icon name="people" class="mx-3 size-icon"></ion-icon></a>
                 <a href="{% url 'messenger:list' %}" class=" m-1 a-menu {% if '/messenger/' in request.path %}activate{% endif %} "><ion-icon name="mail" class="mx-3 size-icon"></ion-icon></a>
             </div>

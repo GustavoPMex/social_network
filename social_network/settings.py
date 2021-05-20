@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'core',
     'posts',
     'friends',
+    'news',
     'messenger.apps.MessengerConfig',
 
 ]
@@ -59,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'registration.middleware.LoginRequiredMiddleWare'
+    'registration.middleware.LoginRequiredMiddleWare',
 ]
 
 ROOT_URLCONF = 'social_network.urls'

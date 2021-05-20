@@ -30,7 +30,7 @@ class Thread(models.Model):
     users = models.ManyToManyField(User, related_name='threads')
     messages = models.ManyToManyField(Message)
     updated = models.DateTimeField(auto_now=True)
-
+    
     objects = ThreadManager()
 
     class Meta:
