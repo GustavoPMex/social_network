@@ -6,10 +6,10 @@
 
 <div class="label-profile text-left"><p>Post</p></div>
     <div>
-        <form action="">
+        <form action="{% url 'post:create'  %}" method="GET">
             <div class="form-group text-center">
-                <textarea class="form-control"  rows="3" placeholder="What's up?"></textarea>
-                <button type="submit" class="btn btn-success mt-3" disabled>Post</button>
+                <textarea id="text-post" class="form-control"  rows="3" placeholder="What's up?" name="post" required></textarea>
+                <button id="send" type="submit" class="btn btn-success mt-3" disabled>Post</button>
             </div>
         </form>
     </div>
@@ -17,27 +17,53 @@
 
 <div class="time-line-profile">
     <!-- Example -->
-    <div class="content-target-profile">
-        <div >
-            <div class="content-img-target-profile mx-auto">
-                <img class="img-target-profile" src="/img/profile-default.jpg" alt="">
-            </div>
-        </div>
-        <div class="content-p-target-profile mx-auto">
-            <p class="p-name-target-profile">Luis Halo Master Chif: </p>
-            <p class="p-target-profile">"Jueves de Halo"</p>
-        </div>
-        <div class="like-dislike-container text-center mt-2">
-            <button class="btn-like-dislike" id="likebtn">
-                <ion-icon name="heart"></ion-icon>
-            </button>
-            <input class="input-like-dislike" type="number" name="" id="input_like" value="0">
+    {% if post_on_date %}
+        {% load static %}
+        {% for object in post_on_date %}
+            <div class="content-target-profile">
+                <div >
+                    {% if object.owner.profile.img_profile %}
+                        <div class="content-img-target-profile mx-auto">
+                            <img class="img-target-profile" src="{{object.owner.profile.img_profile.url}}" alt="">
+                        </div>
+                    {% else %}
+                        <div class="content-img-target-profile mx-auto">
+                            <img class="img-target-profile" src="{% static 'img/profile-default.jpg' %}" alt="">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="content-p-target-profile mx-auto">
+                    <p class="p-name-target-profile">{{object.owner}}: </p>
+                    <p class="p-target-profile">"{{object.post_user}}"</p>
+                </div>
+                <div class="like-dislike-container text-center mt-2">
+                    <button class="btn-like-dislike" id="likebtn">
+                        <ion-icon name="heart"></ion-icon>
+                    </button>
+                    <input class="input-like-dislike" type="number" name="" id="input_like" value="{{object.like_post}}">
 
-            <button class="btn-like-dislike" id="dislikebtn">
-                <ion-icon name="heart-dislike"></ion-icon>
-            </button>
-            <input class="input-like-dislike" type="number" name="" id="input_dislike" value="0">
-        </div>
-    </div>
+                    <button class="btn-like-dislike" id="dislikebtn">
+                        <ion-icon name="heart-dislike"></ion-icon>
+                    </button>
+                    <input class="input-like-dislike" type="number" name="" id="input_dislike" value="{{object.dislike_post}}">
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="p-no-friends text-center">No posts yet</p>
+    {% endif %}
 </div>
+
+<script>
+    var content = document.getElementById('text-post');
+    content.addEventListener('keyup', function(){
+        if(!this.checkValidity() || !this.value){
+            send.disabled = true;
+        } else {
+            send.disabled = false;
+        }
+    })
+</script>
+
 {% endblock %}
+

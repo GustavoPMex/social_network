@@ -19,6 +19,7 @@ from core.urls import urls_core
 from friends.urls import friends_urls
 from messenger.urls import messenger_urls
 from news.urls import news_urls
+from posts.urls import post_urls
 from django.conf import settings
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('friends/', include(friends_urls)), 
     path('messenger/', include(messenger_urls)),
     path('news/', include(news_urls)),
+    path('posts/', include(post_urls)),
     path('admin/', admin.site.urls),
 
     # Paths registration
