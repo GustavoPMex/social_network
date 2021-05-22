@@ -4,10 +4,10 @@
             <h5 class="modal-title">Confirmation</h5>
         </div>
         <div class="modal-body">
-            <form role="form" action="{% url 'profile_core:delete' object.id %}" method="post"  class="form-inline">
+            <form action="{% url 'post:delete' id_post slug %}" method="POST"  class="form-inline">
                 {% csrf_token %}
                 <div class="text-center col-12">
-                    <p class="content-modal">Are you sure?</p>
+                    <p class="content-modal">Delete post?</p>
                 </div>
                 <div class="modal-footer mx-auto">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <div class="label-profile text-left"><p>Post</p></div>
     <div>
         <form action="{% url 'post:create'  %}" method="GET">
@@ -19,6 +20,7 @@
     <!-- Example -->
     {% if post_on_date %}
         {% load static %}
+        {% include 'includes/modal.html' %}
         {% for object in post_on_date %}
             <div class="content-target-profile">
                 <div >
@@ -36,6 +38,11 @@
                     <p class="p-name-target-profile">{{object.owner}}: </p>
                     <p class="p-target-profile">"{{object.post_user}}"</p>
                 </div>
+                {% if request.user == object.owner %}
+                    <div class="text-center mt-1">
+                        <a onclick="return abrir_modal('{% url 'post:delete' object.id 'news' %}')" class="btn btn-danger" href="#">Delete</a>
+                    </div>
+                {% endif %}
                 <div class="like-dislike-container text-center mt-2">
                     <button class="btn-like-dislike" id="likebtn">
                         <ion-icon name="heart"></ion-icon>

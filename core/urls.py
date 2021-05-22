@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import CreatePost, DeletePost
+from .views import CreatePost
 
 urls_core = ([
-    path('', CreatePost.as_view(), name='profile'),
-    path('profile/delete/<int:pk>/', DeletePost.as_view(), name='delete')
+    path('', CreatePost.as_view(), name='profile'), 
 ], 'profile_core')

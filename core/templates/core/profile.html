@@ -6,7 +6,7 @@
 {% block content %}
 {% load static %}
 
-{% include 'core/includes/modal.html' %}
+{% include 'includes/modal.html' %}
 {% include 'core/includes/modal_logout.html' %}
 
 <div class="container-img-profile mx-auto">
@@ -42,10 +42,10 @@
 <div class="label-profile text-left mt-5"><p>Post</p></div>
     <div>
         <!-- <style>label{display: none;}</style> -->
-        <form action="" method="POST">
+        <form action="{% url 'post:create'  %}" method="GET">
             {% csrf_token %}
             <div class="form-group text-center">
-                {{form.as_p}}
+                <textarea class='form-control' rows="3" placeholder="What's up?" name="post"></textarea>
                 <button type="submit" class="btn btn-success mt-3">Post</button>
             </div>
         </form>
@@ -69,8 +69,7 @@
                     <p class="p-target-profile">"{{element.post_user}}"</p>
                 </div>
                 <div class="text-center mt-1">
-                
-                    <a onclick="return abrir_modal('{% url 'profile_core:delete' element.id %}')" class="btn btn-danger" href="#">Delete</a>
+                    <a onclick="return abrir_modal('{% url 'post:delete' element.id 'profile' %}')" class="btn btn-danger" href="#">Delete</a>
                 </div>
                 <div class="like-dislike-container text-center mt-2">
                     <button class="btn-like-dislike" id="likebtn">
