@@ -1,7 +1,7 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add friend</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Block</h5>
         </div>
 
         <div class="modal-body">
@@ -10,12 +10,12 @@
                 {% csrf_token %} 
 
                 <div class="text-center col-12">
-                   <p>Block {{friend_name}}?</p>
+                   <p class="p-modal">Block {{friend_name}}?</p>
                 </div>
 
                 <div class="modal-footer mx-auto">
-                    <button type="submit" class="btn btn-success">Crear</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Block</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div>

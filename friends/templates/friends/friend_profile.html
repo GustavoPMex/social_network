@@ -15,16 +15,19 @@
         <img class="img-profile" src="{% static 'img/profile-default.jpg' %}" alt="">
     </div>
 {% endif %}
-
-<div class="label-name-profile text-center mt-5"><p>{{object.user_name}}</p></div>
+<div class="text-center mt-2">
+    <a class="friends-action block-icon" onclick="return abrir_modal('{% url 'friends:block_user' object.user_name %}')"  href="#"><ion-icon name="eye-off"></ion-icon></a>
+</div>
+<div class="label-name-profile text-center mt-2"><p>{{object.user_name}}</p></div>
 {% if 'send' in request.GET %} 
     <p class="p-request-send text-center">Request send</p>
 {% endif %}
 <div class="text-center">
     {% include 'friends/includes/modal.html' with objeto=object.user_name %}
     <div class="social-media-profile">
+        {% if object.user_name not in request.user.profile.friends.all %}
         <ion-icon class="social-icon-profile mx-1 mx-md-2"  name="key"></ion-icon>
-    
+        {% endif %}
             {% if relation == 'user_cancel' %}
                 <a onclick="return abrir_modal('{% url 'friends:request_cancel' object.friend_user_code %}')" href="#" class="social-link-profile"><button type="button" class="btn btn-danger btn-request">Cancel</button></a> 
             {% elif relation == 'user_accept' %}
@@ -32,15 +35,118 @@
             {% elif relation == 'request' %}
                 <a onclick="return abrir_modal('{% url 'friends:request_send' object.user_name %}')" href="#" class="social-link-profile"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="person-add"></ion-icon></a> 
             {% endif %}
-        <a class="friends-action block-icon" onclick="return abrir_modal('{% url 'friends:block_user' object.user_name %}')"  href="#"><ion-icon name="eye-off"></ion-icon></a>
+    </div>
+    <div class="social-media-profile">
+        {% if object.sn_github %}
+            <a href="{{object.sn_github}}" class="social-link-profile github" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-github"></ion-icon></a>
+        {% endif %}
+        {% if object.sn_twitter %}
+            <a href="{{object.sn_twitter}}" class="social-link-profile twitter" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-twitter"></ion-icon></a>
+        {% endif %}
+        {% if object.sn_youtube %}
+            <a href="{{object.sn_youtube}}" class="social-link-profile youtube" target="_blank"><ion-icon class="social-icon-profile mx-1 mx-md-2" name="logo-youtube"></ion-icon></a>
+        {% endif %}
     </div>
 </div>
 
 
 <div class="label-profile text-left mt-5"><p>Intro</p></div>
+{% if object.user_name not in request.user.profile.friends.all  %}
 <div class="section-profile">
     <p class="p-info-profile">
         Add this person to see your profile. 
     </p>
 </div>
+{% else %}
+<div class="section-profile">
+    <p class="p-info-profile">
+        {{object.intro}}
+    </p>
+</div>
+
+<div class="label-profile text-left mt-5"><p>Time line</p></div>
+<div class="time-line-profile">
+    {% if posts %}
+        {% for element in posts %}
+            <div class="content-target-profile">
+                <div >
+                    <div class="content-img-target-profile mx-auto">
+                        {% if object.img_profile %}
+                            <img class="img-target-profile" src="{{object.img_profile.url}}" alt="">
+                        {% else %}
+                            <img class="img-target-profile" src="{% static 'img/profile-default.jpg' %}" alt="">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="content-p-target-profile mx-auto">
+                    <p class="p-name-target-profile">{{element.owner}}: </p>
+                    <p class="p-target-profile">"{{element.post_user}}"</p>
+                </div>
+                <div class="like-dislike-container text-center mt-2">
+                    <button class="btn-like-dislike {% if request.user in element.like_post.all %}like_active{% endif %}" id="likebtn_{{element.owner}}_{{element.id}}">
+                        <ion-icon name="heart"></ion-icon>
+                        <p id='prueba'></p>
+                    </button>
+                    <input class="input-like-dislike" type="number" name="" id="input_like_{{element.owner}}_{{element.id}}" value="{{element.total_likes}}" readonly>
+
+                    <button class="btn-like-dislike {% if request.user in element.dislike_post.all %}dislike_active{% endif %}" id="dislikebtn_{{element.owner}}_{{element.id}}"> 
+                        <ion-icon name="heart-dislike"></ion-icon>
+                    </button>
+                    <input class="input-like-dislike" type="number" name="" id="input_dislike_{{element.owner}}_{{element.id}}" value="{{element.total_dislikes}}" readonly>
+                </div>
+
+                <script>
+
+                    var likebtn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
+                    likebtn.addEventListener('click', function(){
+                        const url = "{% url 'post:reaction' element.pk 'like' %}";
+                        fetch(url,{'credentials':'include'}).then(response => response.json()).then(function(data){
+                            var response_reactions = data
+                            document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
+                            document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
+
+                            var like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}'),
+                                dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
+                            
+                            if (response_reactions['liked']){
+                                like_btn.classList.add('like_active');
+                                dislike_btn.classList.remove('dislike_active')
+                                
+                            } else {
+                                like_btn.classList.remove('like_active')
+                            }
+                        });
+                    });
+
+                    var dislikebtn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
+                    dislikebtn.addEventListener('click', function(){
+                        const url = "{% url 'post:reaction' element.pk 'dislike' %}";
+                        fetch(url,{'credentials':'include'}).then(response => response.json()).then(function(data){
+                            var response_reactions = data
+                            document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
+                            document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
+                            
+                            var like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}'),
+                                dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
+
+                            if (response_reactions['disliked']){
+                                dislike_btn.classList.add('dislike_active')
+                                like_btn.classList.remove('like_active')
+                                
+                            } else {
+                                dislike_btn.classList.remove('dislike_active')
+                            }
+                        })
+                    })
+                </script>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center">
+            <p class="p-no-posts">No posts yet</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endif %}
 {% endblock %}

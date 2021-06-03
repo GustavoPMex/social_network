@@ -347,12 +347,13 @@ input[type='checkbox']{
     font-size: 30px;
     padding: 0 8px;
     margin: 10px 0;
+    transition: .2s;
 }
 
 .btn-like-dislike:active{
     color: var(--secondary);
-    transform: scale(1.3);
-    transition: .1s;
+    transform: scale(1.5);
+    
 }
 
 .like_active{
@@ -437,8 +438,13 @@ input[type='checkbox']{
 }
 
 .content-friends-actions{
-    text-align: center;
+    text-align: left;
 }
+
+.content-friends-search{
+    text-align: right;
+}
+
 
 .friends-action{
     font-size:30px;
@@ -786,6 +792,9 @@ form p span{
     color: var(--secondary-dark);
 }
 
+.p-modal{
+    font-size: 22px;
+}
 
 /* Less than 990 */
 @media screen and (max-width: 990px){
@@ -798,6 +807,9 @@ form p span{
     }
 
     .content-friends-actions{
+        text-align: center;
+    }
+    .content-friends-search{
         text-align: center;
     }
 

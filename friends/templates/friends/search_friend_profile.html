@@ -22,7 +22,7 @@
         </form>
     </div>
     <div class="col-lg-2">
-        <a class="btn btn-danger" href="/blocks_template.html">Blocking</a>
+        <a class="btn btn-danger" href="{% url 'friends:block_list' %}">Blocking</a>
     </div>
 </div>
 
@@ -37,15 +37,15 @@
             <div class="mt-5">
                 <div class="mb-5 row">
                     {% if field.img_profile %}
-                        <div class="col-12 col-lg-3 text-center">
+                        <div class="col-12 col-lg-6 content-friends-search">
                             <img class="img-friends-body" src="{{field.img_profile.url}}" alt="">
                         </div>
                     {% else %}
-                        <div class="col-12 col-lg-3 text-center">
+                        <div class="col-12 col-lg-6 content-friends-search">
                             <img class="img-friends-body" src="{% static '/img/profile-default.jpg' %}" alt="">
                         </div>
                     {% endif %}
-                    <div class="col-12 col-lg-9 content-friends-actions mt-4">
+                    <div class="col-12 col-lg-6 content-friends-actions mt-4">
                         <a class="link-friends-body" href="{% url 'friends:profile' field.friend_user_code %}">{{field.user_name}}</a>
                     </div>
                 </div>

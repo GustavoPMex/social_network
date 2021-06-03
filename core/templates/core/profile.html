@@ -83,7 +83,9 @@
                     </button>
                     <input class="input-like-dislike" type="number" name="" id="input_dislike_{{element.owner}}_{{element.id}}" value="{{element.total_dislikes}}" readonly>
                 </div>
+
                 <script>
+
                     var likebtn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
                     likebtn.addEventListener('click', function(){
                         const url = "{% url 'post:reaction' element.pk 'like' %}";
@@ -92,8 +94,8 @@
                             document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
                             document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
 
-                            like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
-                            dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}')
+                            var like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}'),
+                                dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
                             
                             if (response_reactions['liked']){
                                 like_btn.classList.add('like_active');
@@ -113,8 +115,8 @@
                             document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
                             document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
                             
-                            like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
-                            dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}')
+                            var like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}'),
+                                dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
 
                             if (response_reactions['disliked']){
                                 dislike_btn.classList.add('dislike_active')
@@ -125,6 +127,8 @@
                             }
                         })
                     })
+
+
 
                 </script>
             </div>
@@ -145,6 +149,7 @@
         } else {
             send.disabled = false;
         }
-    })
+    });
 </script>
+
 {% endblock %}

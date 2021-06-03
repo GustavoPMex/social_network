@@ -1,22 +1,21 @@
-from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, TemplateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from registration.models import Profile
 from .models import Relationship
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from .forms import RelationshipForms
 from django.db.models import Q
-# Create your views here.  
+from django.contrib.auth.models import User
+from posts.models import PostUser
 
 # falanito - cq37zv
 # Luis - 0yl6or
 # Gustavo - 2fvu7d
 # Fulanito - cwguhj
 
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+
 
 class FriendsView(TemplateView):
     template_name = 'friends/friends.html'
@@ -61,6 +60,10 @@ class ProfileFriend(DetailView):
                 context['relation'] = 'no_request'
         else:
             context['relation'] = 'request'
+
+        #OBTENER LOS POST
+        post_friend = PostUser.objects.filter(owner=friend_user)
+        context['posts'] = post_friend
 
         return context
 
@@ -236,7 +239,7 @@ def UnblockUser(request, friend_name):
         'friend_name':friend_name
     }
     return render(request, 'friends/unblock_user.html', context)
- 
+
 class SearchViewPerson(ListView):
     model = Profile
     template_name = 'friends/search_friend_profile.html'
@@ -264,7 +267,7 @@ class SearchViewPerson(ListView):
                     #En dado caso que no haya una relación entre usuarios, simplemente mostramos el resultado
                     result = query_result
         return result
-       
+
 class SearchViewFriends(ListView):
     model = Profile
     template_name = 'friends/search_friend_list.html'
@@ -288,20 +291,3 @@ class SearchViewFriends(ListView):
                     result = query_result
         
         return result
-
-
-# class RequestSend(CreateView):
-#     model = Relationship
-#     form_class = RelationshipForms
-#     template_name = 'friends/send_request.html'
-    
-#     def get_success_url(self):
-#         return reverse_lazy('friends:list')
-
-#     def form_valid(self, form):
-#         obj = form.save(commit=False)
-#         obj.sender = self.request.user.profile
-#         receiver_contain = Relationship.object.get(receiver=self.kwargs.get('slug', None))
-#         print(receiver_contain)
-#         obj.status = 'send'
-#         return super(RequestSend, self).form_valid(form)

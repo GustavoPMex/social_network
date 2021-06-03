@@ -25,13 +25,13 @@
     </div>
     
     <div class="col-lg-2">
-        <a class="btn btn-danger" href="/blocks_template.html">Blocking</a>
+        <a class="btn btn-danger" href="{% url 'friends:block_list' %}">Blocking</a>
     </div>
 </div>
 
 
 <div class="content-friends-list">
-    <div class="label-profile text-left mt-5"><p>List | <a class="friends-links  list-request" href="{% url 'friends:request_list' %}">Requests {% if num_requests %}({{num_requests}}) {% endif %} </a> | <a class="friends-links  list-blocks" href="{% url 'friends:block_list' %}">Block</a></p></div>
+    <div class="label-profile text-left mt-5"><p>List | <a class="friends-links  list-request" href="{% url 'friends:request_list' %}">Requests {% if num_requests %}({{num_requests}}) {% endif %} </a></p></div>
     {% load static %}
     
     {% if request.user.profile.get_friends %}

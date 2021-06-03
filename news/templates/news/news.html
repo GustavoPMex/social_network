@@ -63,8 +63,9 @@
                             document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
                             document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
                             
-                            like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
-                            dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}')
+                            var like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}'),
+                                dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
+                                
                             if (response_reactions['liked']){
                                 like_btn.classList.add('like_active');
                                 dislike_btn.classList.remove('dislike_active')
@@ -83,8 +84,8 @@
                             document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
                             document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
 
-                            like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
-                            dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}')
+                            var like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}'),
+                                dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
 
                             if (response_reactions['disliked']){
                                 dislike_btn.classList.add('dislike_active')
