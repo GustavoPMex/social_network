@@ -45,8 +45,8 @@
         <form action="{% url 'post:create'  %}" method="GET">
             {% csrf_token %}
             <div class="form-group text-center">
-                <textarea class='form-control' rows="3" placeholder="What's up?" name="post"></textarea>
-                <button type="submit" class="btn btn-success mt-3">Post</button>
+                <textarea id="text-post" class='form-control' rows="3" placeholder="What's up?" name="post"></textarea>
+                <button id="send" type="submit" class="btn btn-success mt-3" disabled>Post</button>
             </div>
         </form>
     </div>
@@ -65,23 +65,68 @@
                     </div>
                 </div>
                 <div class="content-p-target-profile mx-auto">
-                    <p class="p-name-target-profile">Gustavo Alonso Pacheco Mex: </p>
+                    <p class="p-name-target-profile">{{element.owner}}: </p>
                     <p class="p-target-profile">"{{element.post_user}}"</p>
                 </div>
                 <div class="text-center mt-1">
                     <a onclick="return abrir_modal('{% url 'post:delete' element.id 'profile' %}')" class="btn btn-danger" href="#">Delete</a>
                 </div>
                 <div class="like-dislike-container text-center mt-2">
-                    <button class="btn-like-dislike" id="likebtn">
+                    <button class="btn-like-dislike {% if request.user in element.like_post.all %}like_active{% endif %}" id="likebtn_{{element.owner}}_{{element.id}}">
                         <ion-icon name="heart"></ion-icon>
+                        <p id='prueba'></p>
                     </button>
-                    <input class="input-like-dislike" type="number" name="" id="input_like" value="{{element.like_post}}">
+                    <input class="input-like-dislike" type="number" name="" id="input_like_{{element.owner}}_{{element.id}}" value="{{element.total_likes}}" readonly>
 
-                    <button class="btn-like-dislike" id="dislikebtn">
+                    <button class="btn-like-dislike {% if request.user in element.dislike_post.all %}dislike_active{% endif %}" id="dislikebtn_{{element.owner}}_{{element.id}}"> 
                         <ion-icon name="heart-dislike"></ion-icon>
                     </button>
-                    <input class="input-like-dislike" type="number" name="" id="input_dislike" value="{{element.dislike_post}}">
+                    <input class="input-like-dislike" type="number" name="" id="input_dislike_{{element.owner}}_{{element.id}}" value="{{element.total_dislikes}}" readonly>
                 </div>
+                <script>
+                    var likebtn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
+                    likebtn.addEventListener('click', function(){
+                        const url = "{% url 'post:reaction' element.pk 'like' %}";
+                        fetch(url,{'credentials':'include'}).then(response => response.json()).then(function(data){
+                            var response_reactions = data
+                            document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
+                            document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
+
+                            like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
+                            dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}')
+                            
+                            if (response_reactions['liked']){
+                                like_btn.classList.add('like_active');
+                                dislike_btn.classList.remove('dislike_active')
+                                
+                            } else {
+                                like_btn.classList.remove('like_active')
+                            }
+                        });
+                    });
+
+                    var dislikebtn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}');
+                    dislikebtn.addEventListener('click', function(){
+                        const url = "{% url 'post:reaction' element.pk 'dislike' %}";
+                        fetch(url,{'credentials':'include'}).then(response => response.json()).then(function(data){
+                            var response_reactions = data
+                            document.getElementById('input_like_{{element.owner}}_{{element.id}}').value = response_reactions['total_likes'];
+                            document.getElementById('input_dislike_{{element.owner}}_{{element.id}}').value = response_reactions['total_dislikes'];
+                            
+                            like_btn = document.getElementById('likebtn_{{element.owner}}_{{element.id}}');
+                            dislike_btn = document.getElementById('dislikebtn_{{element.owner}}_{{element.id}}')
+
+                            if (response_reactions['disliked']){
+                                dislike_btn.classList.add('dislike_active')
+                                like_btn.classList.remove('like_active')
+                                
+                            } else {
+                                dislike_btn.classList.remove('dislike_active')
+                            }
+                        })
+                    })
+
+                </script>
             </div>
         {% endfor %}
     {% else %}
@@ -90,7 +135,16 @@
         </div>
     {% endif %}
 
-    
-
 </div>
+
+<script>
+    var content = document.getElementById('text-post');
+    content.addEventListener('keyup', function(){
+        if(!this.checkValidity() || !this.value){
+            send.disabled = true;
+        } else {
+            send.disabled = false;
+        }
+    })
+</script>
 {% endblock %}
