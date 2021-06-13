@@ -49,6 +49,11 @@ body{
     color: var(--light);
 }
 
+.p-menu{
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
 
 
 a:hover{
@@ -866,10 +871,6 @@ form p span{
         overflow-y: auto;
     }
 
-    .size-icon{
-        font-size: 35px;
-    }
-
     #sidebar-container{
         min-height: 0;
     }
@@ -954,7 +955,25 @@ form p span{
         font-size: 25px;
     }
 
+    /* MENU */
 
+    .p-menu{
+        display: none;
+    }
+
+    div .bg-primary{
+        text-align: center;
+    }
+
+    .menu{
+        display: inline;
+        text-align: center;
+        width: 100%;
+    }    
+
+    .size-icon{
+        font-size: 30px;
+    }
 
 }
 

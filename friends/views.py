@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, TemplateView
@@ -148,11 +148,10 @@ def RequestCancel(request, friend_code):
     current_user_code = request.user.profile.friend_user_code
     relation_friend = Relationship.objects.filter(sender__friend_user_code=current_user_code,
                                                   receiver__friend_user_code=friend_code)
-    if relation_friend:
-        relation_friend.delete()
-        return redirect(reverse_lazy('friends:profile', kwargs={'slug':friend_code})) 
-    else:
-        return HttpResponseForbidden()
+                                                  
+    relation_friend.delete()
+
+    return redirect(reverse_lazy('friends:profile', kwargs={'slug':friend_code})) 
 
 def RequestAccepted(request, id_relation, friend_code):
     obj_relationship = get_object_or_404(Relationship, id=id_relation)

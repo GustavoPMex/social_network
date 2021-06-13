@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
 from .models import Thread, Message
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse,HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
@@ -25,6 +24,20 @@ class DeleteThread(DeleteView):
     model = Thread
     template_name = 'messenger/delete_chat.html'
     success_url = reverse_lazy('messenger:list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        if self.object:
+            for message in self.object.messages.all():
+                if message.user == self.request.user:
+                    message.delete()
+                
+            if self.object.messages.all():
+                return HttpResponseRedirect(reverse_lazy('messenger:detail', kwargs={'pk':self.object.id}))
+        
+        return HttpResponseRedirect(self.get_success_url())
+        
 
 def add_message(request, pk):
     json_response = {'created':False}
